@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import ru.kata.spring.bootstrap.model.Role;
 import ru.kata.spring.bootstrap.model.User;
 import ru.kata.spring.bootstrap.repositories.RoleRepository;
 import ru.kata.spring.bootstrap.repositories.UserRepository;
@@ -51,4 +53,34 @@ public class UserService{
         return userRepository.findByUsername(username);
     }
 
+    @Transactional
+    public void fillUsers() {
+        fillRoles();
+        User admin = new User("admin", "admin_name", "admin_lastname",
+                "admin@mail.com", 33, "admin");
+        admin.setRoles(new HashSet<>(roleRepository.findAll()));
+        User user = new User("user", "user_name", "user_lastname",
+                "user@mail.com", 22, "user");
+        user.addRole(roleRepository.findByName("ROLE_USER"));
+        User loadedUserFromDB = findByUsername(admin.getUsername());
+        if (loadedUserFromDB == null) {
+            save(admin);
+        }
+        loadedUserFromDB = null;
+        loadedUserFromDB = findByUsername(user.getUsername());
+        System.out.println("\n");
+        System.out.println(loadedUserFromDB);
+        System.out.println("\n");
+        if (loadedUserFromDB == null) {
+            save(user);
+        }
+    }
+
+    @Transactional
+    public void fillRoles() {
+        if (roleRepository.findAll().isEmpty()) {
+            roleRepository.save(new Role("ROLE_ADMIN"));
+            roleRepository.save(new Role("ROLE_USER"));
+        }
+    }
 }

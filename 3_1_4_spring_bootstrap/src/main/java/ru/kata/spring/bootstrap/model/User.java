@@ -5,6 +5,8 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -26,16 +28,16 @@ public class User implements UserDetails {
     @Column(name = "username", nullable = false, unique = true, length = 32)
     private String username;
 
-    @Column(name = "first_name", nullable = false, unique = true, length = 16)
+    @Column(name = "first_name", nullable = true, unique = false, length = 16)
     private String first_name;
 
-    @Column(name = "last_name", nullable = false, unique = true, length = 16)
+    @Column(name = "last_name", nullable = true, unique = false, length = 16)
     private String last_name;
 
-    @Column(name = "email", nullable = false, unique = true, length = 32)
+    @Column(name = "email", nullable = true, unique = true, length = 32)
     private String email;
 
-    @Column(name = "age")
+    @Column(name = "age", nullable = true)
 //    @Min(value = 0, message = "Неверно указан возраст")
     private Integer age;
 
@@ -44,7 +46,8 @@ public class User implements UserDetails {
 //    @Size(min = 4, max = 100, message = "Пароль должен содержать не менее трех символов")
     private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE) //@Fetch(FetchMode.JOIN)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE) //
+    @Fetch(FetchMode.JOIN)
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
@@ -101,5 +104,15 @@ public class User implements UserDetails {
 
     public void setPasswordConfirm(String passwordConfirm) {
         this.passwordConfirm = passwordConfirm;
+    }
+
+    @Override
+    public String toString() {
+        return "User:" +
+                "\nid      = " + id +
+                "\nusername= " + username +
+                "\npassword= " + password +
+                "\nage     = " + age +
+                "\nroles   = " + roles;
     }
 }
