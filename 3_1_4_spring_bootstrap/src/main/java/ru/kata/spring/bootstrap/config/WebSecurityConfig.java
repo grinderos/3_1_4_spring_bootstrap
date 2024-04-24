@@ -6,11 +6,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import ru.kata.spring.bootstrap.service.PasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
@@ -18,46 +19,54 @@ public class WebSecurityConfig {
 
     @Qualifier("userDetailsServiceImpl")
     private UserDetailsService userDetailsService;
-    private AuthenticationManager authenticationManager;
+//    private AuthenticationManager authenticationManager;
 
     @Autowired
-    public WebSecurityConfig(UserDetailsService userDetailsService, AuthenticationManager authenticationManager) {
+    public WebSecurityConfig(UserDetailsService userDetailsService
+//            , AuthenticationManager authenticationManager
+    ) {
         this.userDetailsService = userDetailsService;
-        this.authenticationManager = authenticationManager;
+//        this.authenticationManager = authenticationManager;
     }
 
-    @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/scrypts/**", "/", "/register", "start").permitAll()
+                        .requestMatchers("/","/start","/auth/**","/scrypts/**" ).permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin((form) -> form
-                        .loginPage("login")
-                        .failureUrl("auth/error")
+                        .loginPage("/auth/login")
+                        .failureUrl("/auth/error")
                         .permitAll()
                 )
                 .logout((logout) -> logout
-                        .logoutSuccessUrl("hello")
+                        .logoutSuccessUrl("/start")
                         .permitAll());
 
         return http.build();
     }
 
+    //    @Bean
+//    public AuthenticationManager customAuthenticationManager() {
+//        return authenticationManager;
+//    }
+
+//    @Bean
+//    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+//        return new BCryptPasswordEncoder();
+//    }
+
     @Bean
-    public AuthenticationManager customAuthenticationManager() {
-        return authenticationManager;
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
+        return authConfig.getAuthenticationManager();
     }
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
+        auth.userDetailsService(userDetailsService).passwordEncoder(PasswordEncoder.bCryptPasswordEncoder());
     }
 //    @Bean
 //    public UserDetailsService userDetailsService() {

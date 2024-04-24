@@ -18,20 +18,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Service
-public class UserDetailsServiceImpl implements UserDetailsService{
+public class UserDetailsServiceImpl implements UserDetailsService {
 
-    private UserRepository userRepository;
-    private RoleRepository roleRepository;
     private UserService userService;
-@Autowired
-    public UserDetailsServiceImpl(
-//            UserRepository userRepository,
-            UserService userService
-        , RoleRepository roleRepository) {
-//        this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
-        this.userService = userService;
-    }
 
     @Override
     @Transactional(readOnly = true)
@@ -40,7 +29,7 @@ public class UserDetailsServiceImpl implements UserDetailsService{
         if (user == null) throw new UsernameNotFoundException(username);
 
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-        for (Role role : user.getRoles()){
+        for (Role role : user.getRoles()) {
             grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
         }
 
@@ -54,10 +43,10 @@ public class UserDetailsServiceImpl implements UserDetailsService{
         fillRoles();
         User admin = new User("admin", "admin_name", "admin_lastname",
                 "admin@mail.com", 33, "admin");
-        admin.setRoles(new HashSet<>(roleRepository.findAll()));
+        admin.setRoles(new HashSet<>(userService.getRoleRepository().findAll()));
         User user = new User("user", "user_name", "user_lastname",
                 "user@mail.com", 22, "user");
-        user.addRole(roleRepository.findByName("ROLE_USER"));
+        user.addRole(userService.getRoleRepository().findByName("ROLE_USER"));
         User loadedUserFromDB = userService.findByUsername(admin.getUsername());
         if (loadedUserFromDB == null) {
             userService.save(admin);
@@ -74,9 +63,18 @@ public class UserDetailsServiceImpl implements UserDetailsService{
 
     @Transactional
     public void fillRoles() {
-        if (roleRepository.findAll().isEmpty()) {
-            roleRepository.save(new Role("ROLE_ADMIN"));
-            roleRepository.save(new Role("ROLE_USER"));
+        if (userService.getRoleRepository().findAll().isEmpty()) {
+            userService.getRoleRepository().save(new Role("ROLE_ADMIN"));
+            userService.getRoleRepository().save(new Role("ROLE_USER"));
         }
+    }
+
+    public UserService getUserService() {
+        return userService;
+    }
+
+    @Autowired
+    public void setUserService(UserService userService) {
+        this.userService = userService;
     }
 }

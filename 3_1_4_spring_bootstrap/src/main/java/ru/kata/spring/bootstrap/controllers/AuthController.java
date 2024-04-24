@@ -8,10 +8,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import ru.kata.spring.bootstrap.model.User;
 import ru.kata.spring.bootstrap.service.SecurityService;
 import ru.kata.spring.bootstrap.service.UserService;
+import ru.kata.spring.bootstrap.service.UserValidator;
 
 @Controller
 public class AuthController {
@@ -43,30 +43,7 @@ public class AuthController {
 //        return "auth/login";
 //    }
 
-
-
-    @GetMapping("/register")
-    public String register(Model model) {
-        if (securityService.isAuthenticated()) {
-            return "redirect:/";
-        }
-        model.addAttribute("userForm", new User());
-        return "auth/register";
-    }
-
-    @PostMapping("/register")
-    public String register(@ModelAttribute("userForm") User user, BindingResult bindingResult) {
-        userValidator.validate(user, bindingResult);
-
-        if (bindingResult.hasErrors()) {
-            return "auth/register";
-        }
-        userService.save(user);
-        securityService.autoLogin(user.getUsername(), user.getPasswordConfirm());
-        return "redirect:/home-page";
-    }
-
-    @GetMapping("/login")
+    @GetMapping("auth/login")
     public String login(Model model, String error, String logout) {
         if (securityService.isAuthenticated()) {
             return "redirect:/home-page";
@@ -78,5 +55,28 @@ public class AuthController {
 
         return "auth/login";
     }
+
+    @GetMapping("auth/register")
+    public String register(Model model) {
+        if (securityService.isAuthenticated()) {
+            return "redirect:/home-page";
+        }
+        model.addAttribute("user", new User());
+        return "/auth/register";
+    }
+
+    @PostMapping("auth/register")
+    public String register(@ModelAttribute("user") User user, BindingResult bindingResult) {
+        userValidator.validate(user, bindingResult);
+
+        if (bindingResult.hasErrors()) {
+            return "auth/register";
+        }
+        userService.save(user);
+        securityService.autoLogin(user.getUsername(), user.getPasswordConfirm());
+        return "redirect:/home-page";
+    }
+
+
 
 }
