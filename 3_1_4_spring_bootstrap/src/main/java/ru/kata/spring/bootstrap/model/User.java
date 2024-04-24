@@ -50,6 +50,9 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
+    @Transient
+    private String passwordConfirm;
+
     public User() {
     }
 
@@ -61,6 +64,10 @@ public class User implements UserDetails {
         this.email = email;
         this.age = age;
         this.password = password;
+    }
+
+    public void addRole(Role role) {
+        this.roles.add(role);
     }
 
     @Override
@@ -86,5 +93,13 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public String getPasswordConfirm() {
+        return passwordConfirm;
+    }
+
+    public void setPasswordConfirm(String passwordConfirm) {
+        this.passwordConfirm = passwordConfirm;
     }
 }
