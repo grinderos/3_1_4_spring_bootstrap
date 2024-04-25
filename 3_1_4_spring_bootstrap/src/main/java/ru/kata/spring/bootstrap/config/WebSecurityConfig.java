@@ -34,17 +34,19 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/","/start","/home-page", "/auth/**","/scrypts/**","/logout" ).permitAll()
+                        .requestMatchers("/", "/start", "/auth/**", "/scrypts/**", "/logout").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin((form) -> form
                         .loginPage("/auth/login")
+                        .successForwardUrl("/in_system/home")
                         .failureUrl("/auth/error")
                         .permitAll()
                 )
-                .logout((logout) -> logout
+                .logout((logout) -> logout.invalidateHttpSession(true)
                         .logoutSuccessUrl("/start")
-                        .permitAll());
+                        .permitAll())
+        ;
 
         return http.build();
     }
@@ -70,13 +72,13 @@ public class WebSecurityConfig {
     }
 //    @Bean
 //    public UserDetailsService userDetailsService() {
-//        UserDetails user =
+//        UserDetails in_system =
 //                User.withDefaultPasswordEncoder()
-//                        .username("user")
+//                        .username("in_system")
 //                        .password("password")
 //                        .roles("USER")
 //                        .build();
 //
-//        return new InMemoryUserDetailsManager(user);
+//        return new InMemoryUserDetailsManager(in_system);
 //    }
 }

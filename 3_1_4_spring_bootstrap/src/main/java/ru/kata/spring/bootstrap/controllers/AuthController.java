@@ -21,16 +21,16 @@ import java.util.List;
 public class AuthController {
 
     private UserService userService;
-//    private SecurityService securityService;
+    private SecurityService securityService;
     private UserValidator userValidator;
     private List<Role> roles;
 
     @Autowired
     public AuthController(UserService userService,
-//                          SecurityService securityService,
+                          SecurityService securityService,
                           UserValidator userValidator) {
         this.userService = userService;
-//        this.securityService = securityService;
+        this.securityService = securityService;
         this.userValidator = userValidator;
         roles = userService.getRoleRepository().findAll();
     }
@@ -40,10 +40,11 @@ public class AuthController {
         return "start";
     }
 
-//    @GetMapping("/login")
-//    public String login() {
-//        return "auth/login";
-//    }
+    @GetMapping("auth/login")
+    public String login() {
+        System.out.println(" _____ ЛОГИНКА ГЕТ ______");
+        return "auth/login";
+    }
 //
 //    @RequestMapping("/error")
 //    public String loginError(Model model) {
@@ -51,11 +52,12 @@ public class AuthController {
 //        return "auth/login";
 //    }
 
-    @GetMapping("auth/login")
+    @PostMapping("auth/login")
     public String login(Model model, String error, String logout) {
-//        if (securityService.isAuthenticated()) {
-//            return "redirect:/home-page";
-//        }
+        System.out.println(" _____ ЛОГИНКА ПОСТ______");
+        if (securityService.isAuthenticated()) {
+            return "redirect:/in_system/home";
+        }
         if (error != null)
             model.addAttribute("error", "Имя пользователя или пароль неверны.");
         if (logout != null)
@@ -79,11 +81,8 @@ public class AuthController {
     }
 
     @PostMapping("auth/register")
-    public String register(
-            @ModelAttribute("user") User user,
-            Model model
-            , BindingResult bindingResult) { //MODEL model and role
-//        User user = (User)model.getAttribute("user");
+    public String register(@ModelAttribute("user") User user,Model model
+            , BindingResult bindingResult) {
         System.out.println(user);
         model.addAttribute("roles", roles);
         userValidator.validate(user, bindingResult);
@@ -92,8 +91,8 @@ public class AuthController {
             return "auth/register";
         }
         userService.save(user);
-//        securityService.autoLogin(user.getUsername(), user.getPasswordConfirm());
-        return "redirect:/home-page";
+//        securityService.autoLogin(in_system.getUsername(), in_system.getPasswordConfirm());
+        return "redirect:/in_system/home";
     }
 
 

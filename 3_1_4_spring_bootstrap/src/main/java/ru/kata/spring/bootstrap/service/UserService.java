@@ -45,7 +45,7 @@ public class UserService{
 
     public void save(User user) {
         user.setPassword(PasswordEncoder.bCryptPasswordEncoder().encode(user.getPassword()));
-//        user.setRoles(new HashSet<>(roleRepository.findAll()));
+//        in_system.setRoles(new HashSet<>(roleRepository.findAll()));
         userRepository.save(user);
     }
 
@@ -59,8 +59,8 @@ public class UserService{
         User admin = new User("admin", "admin_name", "admin_lastname",
                 "admin@mail.com", 33, "admin");
         admin.setRoles(new HashSet<>(roleRepository.findAll()));
-        User user = new User("user", "user_name", "user_lastname",
-                "user@mail.com", 22, "user");
+        User user = new User("in_system", "user_name", "user_lastname",
+                "in_system@mail.com", 22, "in_system");
         user.addRole(roleRepository.findByName("ROLE_USER"));
         User loadedUserFromDB = findByUsername(admin.getUsername());
         if (loadedUserFromDB == null) {
