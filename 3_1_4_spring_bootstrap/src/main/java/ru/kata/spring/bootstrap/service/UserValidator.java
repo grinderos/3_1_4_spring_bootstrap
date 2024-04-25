@@ -28,19 +28,23 @@ public class UserValidator implements Validator {
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "username", "NotEmpty");
         if (user.getUsername().length() < 3 || user.getUsername().length() > 32) {
-            errors.rejectValue("username", "Size.userForm.username");
+            errors.rejectValue("username", "", "Имя пользователя должно быть длиной от 3 до 32 символов");
         }
         if (userService.findByUsername(user.getUsername()) != null) {
-            errors.rejectValue("username", "Duplicate.userForm.username");
+//            errors.rejectValue("username", "Duplicate.userForm.username");
+            errors.rejectValue("username", "", "Пользователь с таким именем уже существует");
         }
 
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "NotEmpty");
-        if (user.getPassword().length() < 4 || user.getPassword().length() > 16) {
-            errors.rejectValue("password", "Size.userForm.password");
+//        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "NotEmpty");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "", "Поле не может быть пустым");
+        if (user.getPassword().length() < 4 || user.getPassword().length() > 32) {
+//            errors.rejectValue("password", "Size.userForm.password");
+            errors.rejectValue("password", "", "Пароль должен быть от 4 до 32 символов");
         }
 
         if (!user.getPasswordConfirm().equals(user.getPassword())) {
-            errors.rejectValue("passwordConfirm", "Diff.userForm.passwordConfirm");
+//            errors.rejectValue("passwordConfirm", "Diff.userForm.passwordConfirm");
+            errors.rejectValue("passwordConfirm", "", "Пароли не совпадают");
         }
     }
 }

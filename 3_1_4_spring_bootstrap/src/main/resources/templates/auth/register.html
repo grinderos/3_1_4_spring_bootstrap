@@ -62,7 +62,8 @@
     <span class="has-error" th:if="${#fields.hasErrors('passwordConfirm')}" th:errors="*{passwordConfirm}"></span>
 </div>
 
-<button class="btn btn-lg btn-primary btn-block" type="submit">Зарегистрировать</button>
+<button class="btn btn-lg btn-primary btn-block" type="submit">Зарегистрировать</button><br/>
+        <a class="btn btn-sm btn-secondary btn-block" th:href="@{/start}" target="_self">На главную</a>
 </form>
 
 </div>

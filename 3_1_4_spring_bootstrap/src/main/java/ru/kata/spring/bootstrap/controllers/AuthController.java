@@ -23,6 +23,7 @@ public class AuthController {
     private UserService userService;
 //    private SecurityService securityService;
     private UserValidator userValidator;
+    private List<Role> roles;
 
     @Autowired
     public AuthController(UserService userService,
@@ -31,6 +32,7 @@ public class AuthController {
         this.userService = userService;
 //        this.securityService = securityService;
         this.userValidator = userValidator;
+        roles = userService.getRoleRepository().findAll();
     }
 
     @GetMapping("/")
@@ -55,18 +57,18 @@ public class AuthController {
 //            return "redirect:/home-page";
 //        }
         if (error != null)
-            model.addAttribute("error", "Your username and password is invalid.");
+            model.addAttribute("error", "Имя пользователя или пароль неверны.");
         if (logout != null)
-            model.addAttribute("message", "You have been logged out successfully.");
+            model.addAttribute("message", "Вы успешно вышли из системы.");
 
         return "auth/login";
     }
 
     @GetMapping("auth/register")
     public String register(Model model) {
-        List<Role> roles = userService.getRoleRepository().findAll();
         if(roles.isEmpty()){
             userService.fillRoles();
+            roles = userService.getRoleRepository().findAll();
         }
 //        if (securityService.isAuthenticated()) {
 //            return "redirect:/home-page";
@@ -77,8 +79,13 @@ public class AuthController {
     }
 
     @PostMapping("auth/register")
-    public String register(@ModelAttribute("user") User user, BindingResult bindingResult) { //MODEL model and role
+    public String register(
+            @ModelAttribute("user") User user,
+            Model model
+            , BindingResult bindingResult) { //MODEL model and role
+//        User user = (User)model.getAttribute("user");
         System.out.println(user);
+        model.addAttribute("roles", roles);
         userValidator.validate(user, bindingResult);
 
         if (bindingResult.hasErrors()) {
