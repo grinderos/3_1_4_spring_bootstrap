@@ -16,15 +16,12 @@ import java.util.HashSet;
 public class UserService{
     private UserRepository userRepository;
     private RoleRepository roleRepository;
-//    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
     public UserService(UserRepository userRepository, RoleRepository roleRepository
-//    , BCryptPasswordEncoder bCryptPasswordEncoder
     ) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
-//        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     public RoleRepository getRoleRepository() {
@@ -45,7 +42,7 @@ public class UserService{
 
     public void save(User user) {
         user.setPassword(PasswordEncoder.bCryptPasswordEncoder().encode(user.getPassword()));
-//        in_system.setRoles(new HashSet<>(roleRepository.findAll()));
+//        admin.setRoles(new HashSet<>(roleRepository.findAll()));
         userRepository.save(user);
     }
 
@@ -59,8 +56,8 @@ public class UserService{
         User admin = new User("admin", "admin_name", "admin_lastname",
                 "admin@mail.com", 33, "admin");
         admin.setRoles(new HashSet<>(roleRepository.findAll()));
-        User user = new User("in_system", "user_name", "user_lastname",
-                "in_system@mail.com", 22, "in_system");
+        User user = new User("admin", "user_name", "user_lastname",
+                "admin@mail.com", 22, "admin");
         user.addRole(roleRepository.findByName("ROLE_USER"));
         User loadedUserFromDB = findByUsername(admin.getUsername());
         if (loadedUserFromDB == null) {

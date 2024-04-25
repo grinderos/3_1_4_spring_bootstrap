@@ -13,7 +13,8 @@
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         </form>
 
-        <h2>Welcome <span sec:authentication="name"></span> | <a onclick="document.forms['logoutForm'].submit()">Logout</a></h2>
+        <h2>Учетная запись пользователя: <span sec:authentication="name"></span> |
+            <a onclick="document.forms['logoutForm'].submit()">Выход из системы</a></h2>
     </div>
 </div>
 

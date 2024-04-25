@@ -12,7 +12,7 @@
 
 <div class="container">
 
-    <form method="POST" class="form-signin" th:object="${user}" th:action="@{/auth/register}">
+    <form method="POST" class="form-signin" th:object="${user}" th:action="@{/register}">
         <h2 class="form-signin-heading">Заполните поля для регистрации</h2>
         <div class="form-group">
             <input type="text" th:field="*{username}" class="form-control" placeholder="Логин"
@@ -63,7 +63,7 @@
 </div>
 
 <button class="btn btn-lg btn-primary btn-block" type="submit">Зарегистрировать</button><br/>
-        <a class="btn btn-sm btn-secondary btn-block" th:href="@{/start}" target="_self">На главную</a>
+        <a class="btn btn-sm btn-secondary btn-block" th:href="@{/}" target="_self">На главную</a>
 </form>
 
 </div>

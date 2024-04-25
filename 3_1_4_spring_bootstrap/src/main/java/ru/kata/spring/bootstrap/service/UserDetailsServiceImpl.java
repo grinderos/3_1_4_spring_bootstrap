@@ -25,6 +25,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) {
+        System.out.println("ЗАГРУЗКА пользователя из БД");
         User user = userService.findByUsername(username);
         if (user == null) throw new UsernameNotFoundException(username);
 

@@ -14,7 +14,6 @@ import ru.kata.spring.bootstrap.service.SecurityService;
 import ru.kata.spring.bootstrap.service.UserService;
 import ru.kata.spring.bootstrap.service.UserValidator;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -40,47 +39,49 @@ public class AuthController {
         return "start";
     }
 
-    @GetMapping("auth/login")
+    @GetMapping("/login")
     public String login() {
         System.out.println(" _____ ЛОГИНКА ГЕТ ______");
-        return "auth/login";
+        return "/login";
     }
 //
 //    @RequestMapping("/error")
 //    public String loginError(Model model) {
 //        model.addAttribute("loginError", true);
-//        return "auth/login";
+//        return "/login";
 //    }
 
-    @PostMapping("auth/login")
+    @PostMapping("/logn")
     public String login(Model model, String error, String logout) {
         System.out.println(" _____ ЛОГИНКА ПОСТ______");
         if (securityService.isAuthenticated()) {
-            return "redirect:/in_system/home";
+            System.out.println("\n-------------\n ПРОВЕРКА АУТЕНТИФИКАЦИИ ПОЛОЖИТЕЛЬНА\n-----------\n");
+            return "redirect:/admin";
+//            return "/admin/home";
         }
         if (error != null)
             model.addAttribute("error", "Имя пользователя или пароль неверны.");
         if (logout != null)
             model.addAttribute("message", "Вы успешно вышли из системы.");
-
-        return "auth/login";
+        System.out.println("\n-------------\n ОТКАЗ логинки\n-----------\n");
+        return "/login";
     }
 
-    @GetMapping("auth/register")
+    @GetMapping("/register")
     public String register(Model model) {
         if(roles.isEmpty()){
             userService.fillRoles();
             roles = userService.getRoleRepository().findAll();
         }
-//        if (securityService.isAuthenticated()) {
-//            return "redirect:/home-page";
-//        }
+        if (securityService.isAuthenticated()) {
+            return "redirect:/admin";
+        }
         model.addAttribute("user", new User());
         model.addAttribute("roles", roles);
-        return "/auth/register";
+        return "/register";
     }
 
-    @PostMapping("auth/register")
+    @PostMapping("/register")
     public String register(@ModelAttribute("user") User user,Model model
             , BindingResult bindingResult) {
         System.out.println(user);
@@ -88,11 +89,11 @@ public class AuthController {
         userValidator.validate(user, bindingResult);
 
         if (bindingResult.hasErrors()) {
-            return "auth/register";
+            return "/register";
         }
         userService.save(user);
-//        securityService.autoLogin(in_system.getUsername(), in_system.getPasswordConfirm());
-        return "redirect:/in_system/home";
+//        securityService.autoLogin(admin.getUsername(), admin.getPasswordConfirm());
+        return "redirect:/admin";
     }
 
 

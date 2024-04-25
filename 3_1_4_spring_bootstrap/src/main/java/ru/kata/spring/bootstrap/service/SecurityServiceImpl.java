@@ -15,13 +15,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class SecurityServiceImpl implements SecurityService{
 
-    private AuthenticationManager authenticationManager;
-    private UserDetailsService userDetailsService;
+//    private final AuthenticationManager authenticationManager;
+    private final UserDetailsService userDetailsService;
     private static final Logger logger = LoggerFactory.getLogger(SecurityServiceImpl.class);
 
     @Autowired
-    public SecurityServiceImpl(AuthenticationManager authenticationManager, UserDetailsService userDetailsService) {
-        this.authenticationManager = authenticationManager;
+    public SecurityServiceImpl(
+//            AuthenticationManager authenticationManager,
+            UserDetailsService userDetailsService) {
+//        this.authenticationManager = authenticationManager;
         this.userDetailsService = userDetailsService;
     }
 
@@ -29,22 +31,24 @@ public class SecurityServiceImpl implements SecurityService{
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || AnonymousAuthenticationToken.class.
                 isAssignableFrom(authentication.getClass())) {
+            System.out.println("false ------->>>>  "+authentication.getClass());
             return false;
         }
+        System.out.println("\nпроверка аутентификации "+authentication.getName());
         return authentication.isAuthenticated();
     }
 
-    @Override
-    public void autoLogin(String username, String password) {
-        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
-                new UsernamePasswordAuthenticationToken(userDetails, password, userDetails.getAuthorities());
-
-        authenticationManager.authenticate(usernamePasswordAuthenticationToken);
-
-        if (usernamePasswordAuthenticationToken.isAuthenticated()) {
-            SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-            logger.debug(String.format("Auto login %s successfully!", username));
-        }
-    }
+//    @Override
+//    public void autoLogin(String username, String password) {
+//        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+//        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
+//                new UsernamePasswordAuthenticationToken(userDetails, password, userDetails.getAuthorities());
+//
+//        authenticationManager.authenticate(usernamePasswordAuthenticationToken);
+//
+//        if (usernamePasswordAuthenticationToken.isAuthenticated()) {
+//            SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+//            logger.debug(String.format("Auto login %s successfully!", username));
+//        }
+//    }
 }

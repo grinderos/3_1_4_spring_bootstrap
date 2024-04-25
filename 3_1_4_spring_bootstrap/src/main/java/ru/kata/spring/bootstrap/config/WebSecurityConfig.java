@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -17,7 +18,7 @@ import ru.kata.spring.bootstrap.service.PasswordEncoder;
 @EnableWebSecurity
 public class WebSecurityConfig {
 
-    @Qualifier("userDetailsServiceImpl")
+//    @Qualifier("userDetailsServiceImpl")
     private UserDetailsService userDetailsService;
 //    private AuthenticationManager authenticationManager;
 
@@ -34,32 +35,27 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/", "/start", "/auth/**", "/scrypts/**", "/logout").permitAll()
+                        .requestMatchers("/", "/start", "/login", "/logn", "/register", "/scrypts/**").permitAll()
+//                        .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .formLogin((form) -> form
-                        .loginPage("/auth/login")
-                        .successForwardUrl("/in_system/home")
-                        .failureUrl("/auth/error")
+                        .loginPage("/login")
+                                .loginProcessingUrl("/logn")
+                        .successForwardUrl("/admin")
+                        .failureUrl("/login")
                         .permitAll()
                 )
-                .logout((logout) -> logout.invalidateHttpSession(true)
-                        .logoutSuccessUrl("/start")
+                .logout((logout) -> logout
+//                        .invalidateHttpSession(true)
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/")
                         .permitAll())
         ;
 
         return http.build();
     }
 
-    //    @Bean
-//    public AuthenticationManager customAuthenticationManager() {
-//        return authenticationManager;
-//    }
-
-//    @Bean
-//    public BCryptPasswordEncoder bCryptPasswordEncoder() {
-//        return new BCryptPasswordEncoder();
-//    }
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
@@ -70,15 +66,12 @@ public class WebSecurityConfig {
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(PasswordEncoder.bCryptPasswordEncoder());
     }
+
 //    @Bean
-//    public UserDetailsService userDetailsService() {
-//        UserDetails in_system =
-//                User.withDefaultPasswordEncoder()
-//                        .username("in_system")
-//                        .password("password")
-//                        .roles("USER")
-//                        .build();
-//
-//        return new InMemoryUserDetailsManager(in_system);
+//    public DaoAuthenticationProvider daoAuthenticationProvider(UserDetailsService userDetailsService) {
+//        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+//        daoAuthenticationProvider.setPasswordEncoder(PasswordEncoder.bCryptPasswordEncoder());
+//        daoAuthenticationProvider.setUserDetailsService(userDetailsService);
+//        return daoAuthenticationProvider;
 //    }
 }
