@@ -1,77 +1,61 @@
 package ru.kata.spring.bootstrap.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.web.SecurityFilterChain;
 import ru.kata.spring.bootstrap.service.PasswordEncoder;
 
-@Configuration
 @EnableWebSecurity
-public class WebSecurityConfig {
+@EnableMethodSecurity
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-//    @Qualifier("userDetailsServiceImpl")
-    private UserDetailsService userDetailsService;
-//    private AuthenticationManager authenticationManager;
+    private final SuccessUserHandler successUserHandler;
 
     @Autowired
-    public WebSecurityConfig(UserDetailsService userDetailsService
-//            , AuthenticationManager authenticationManager
-    ) {
-        this.userDetailsService = userDetailsService;
-//        this.authenticationManager = authenticationManager;
+    public WebSecurityConfig(SuccessUserHandler successUserHandler) {
+        this.successUserHandler = successUserHandler;
     }
 
-
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    protected void configure(HttpSecurity http) throws Exception {
         http
-                .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/", "/start", "/login", "/logn", "/register", "/scrypts/**").permitAll()
-//                        .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .anyRequest().authenticated()
-                )
-                .formLogin((form) -> form
-                        .loginPage("/login")
-                                .loginProcessingUrl("/logn")
-                        .successForwardUrl("/admin")
-                        .failureUrl("/login")
-                        .permitAll()
-                )
-                .logout((logout) -> logout
-//                        .invalidateHttpSession(true)
-                        .logoutUrl("/logout")
-                        .logoutSuccessUrl("/")
-                        .permitAll())
-        ;
+//                //отключаем защиту от межсайтовой подделки запросов
+//                .csrf().disable()
+                .authorizeRequests()
+                .antMatchers("/", "/start", "/login", "/auth/**", "/error", "/fillUsers", "/fillRoles","/logout")
+                .permitAll()
+                .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/user").hasAnyRole("ADMIN", "USER")
+                .anyRequest().authenticated()
+                .and()
+                .formLogin()
+                .successHandler(successUserHandler)
+                .loginPage("/login")
+                .loginProcessingUrl("/process_login")
+//                .successForwardUrl("/admin")
 
-        return http.build();
+                .permitAll()
+                .and()
+                .logout()
+//                .logoutUrl("/logout")
+                .logoutSuccessUrl("/")
+                .permitAll();
     }
-
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
-        return authConfig.getAuthenticationManager();
+    public DaoAuthenticationProvider daoAuthenticationProvider(UserDetailsService userDetailsService) {
+        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+        daoAuthenticationProvider.setPasswordEncoder(PasswordEncoder.bCryptPasswordEncoder());
+        daoAuthenticationProvider.setUserDetailsService(userDetailsService);
+        return daoAuthenticationProvider;
     }
-
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(PasswordEncoder.bCryptPasswordEncoder());
+    @Bean
+    public AuthenticationManager customAuthenticationManager() throws Exception {
+        return authenticationManager();
     }
-
-//    @Bean
-//    public DaoAuthenticationProvider daoAuthenticationProvider(UserDetailsService userDetailsService) {
-//        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-//        daoAuthenticationProvider.setPasswordEncoder(PasswordEncoder.bCryptPasswordEncoder());
-//        daoAuthenticationProvider.setUserDetailsService(userDetailsService);
-//        return daoAuthenticationProvider;
-//    }
 }

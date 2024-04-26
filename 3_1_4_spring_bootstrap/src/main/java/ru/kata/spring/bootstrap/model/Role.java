@@ -1,8 +1,9 @@
 package ru.kata.spring.bootstrap.model;
 
-import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
+
+import javax.persistence.*;
 
 @Entity
 @Data

@@ -10,11 +10,11 @@ import ru.kata.spring.bootstrap.model.User;
 @Component
 public class UserValidator implements Validator {
 
-    private UserService userService;
+    private RepositoryService repositoryService;
 
     @Autowired
-    public UserValidator(UserService userService) {
-        this.userService = userService;
+    public UserValidator(RepositoryService repositoryService) {
+        this.repositoryService = repositoryService;
     }
 
     @Override
@@ -26,21 +26,26 @@ public class UserValidator implements Validator {
     public void validate(Object o, Errors errors) {
         User user = (User) o;
 
-//        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "username", "NotEmpty");
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "username", "Поле обязательно для заполнения");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "username", "", "Поле обязательно для заполнения");
         if (user.getUsername().length() < 3 || user.getUsername().length() > 32) {
             errors.rejectValue("username", "", "Имя пользователя должно быть длиной от 3 до 32 символов");
         }
-        if (userService.findByUsername(user.getUsername()) != null) {
+        if (repositoryService.findByUsername(user.getUsername()) != null) {
 //            errors.rejectValue("username", "Duplicate.userForm.username");
             errors.rejectValue("username", "", "Пользователь с таким именем уже существует");
         }
 
-//        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "NotEmpty");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "", "Поле не может быть пустым");
         if (user.getPassword().length() < 4 || user.getPassword().length() > 32) {
-//            errors.rejectValue("password", "Size.userForm.password");
             errors.rejectValue("password", "", "Пароль должен быть от 4 до 32 символов");
+        }
+
+        if (user.getAge() != null && user.getAge() < 0) {
+            errors.rejectValue("age", "", "Возраст не может быть отрицательным");
+        }
+
+        if (user.getAge() != null && user.getAge() < 0) {
+            errors.rejectValue("age", "", "Возраст не может быть отрицательным");
         }
 
         if (!user.getPasswordConfirm().equals(user.getPassword())) {

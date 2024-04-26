@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form th:method="POST" th:action="@{/logout}">
+    <input type="submit" value="выход из системы"/>
+</form><br/>
+<h2>Страница администратора</h2>
+<br>
+<table border="1">
+    <th>
+        <button onclick="window.location.href = '/user';"><h4>Показать информацию о<br/> текущем пользователе</h4></button>
+    </th>
+    <th>
+        <button onclick="window.location.href = '/admin/users';"><h4>Показать список<br/>всех пользователей</h4></button>
+    </th>
+    <th>
+        <button onclick="window.location.href = '/admin/new';"><h4>Добавить нового<br/> пользователя</h4></button>
+    </th>
+
+</table>
+<br/>
+<table border="1">
+    <th>
+        <button onclick="window.location.href = '/admin/truncate';"><h4>Очистить таблицу<br/> пользователей</h4></button>
+    </th>
+    <th>
+        <button onclick="window.location.href = '/fillUsers';"><h4>Заполнить таблицы стандартными<br/>
+            пользователями: 'admin' и 'user'
+        </h4></button>
+    </th>
+</table>
+</body>
+</html>

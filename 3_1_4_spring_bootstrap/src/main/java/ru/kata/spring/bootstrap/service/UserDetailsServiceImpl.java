@@ -6,44 +6,65 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-//import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.bootstrap.model.Role;
 import ru.kata.spring.bootstrap.model.User;
-import ru.kata.spring.bootstrap.repositories.RoleRepository;
-import ru.kata.spring.bootstrap.repositories.UserRepository;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    private UserService userService;
+    private RepositoryService repositoryService;
+
+    @Autowired
+    public UserDetailsServiceImpl(RepositoryService repositoryService) {
+        this.repositoryService = repositoryService;
+    }
 
     @Override
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) {
         System.out.println("ЗАГРУЗКА пользователя из БД");
-        User user = userService.findByUsername(username);
-        if (user == null) throw new UsernameNotFoundException(username);
+
+        User user = repositoryService.findByUsername(username);
+        if (user == null){ throw new UsernameNotFoundException(username);}
 
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
         for (Role role : user.getRoles()) {
             grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
         }
-
         return new org.springframework.security.core.userdetails.User
                 (user.getUsername(), user.getPassword(), grantedAuthorities);
     }
 
-    public UserService getUserService() {
-        return userService;
+    //<<<<< delegate block >>>>>
+    public User findUserById(Long id) {return repositoryService.findUserById(id);}
+    public User findByUsername(String username) {
+        return repositoryService.findByUsername(username);
     }
+    public List<User> getUsers() {return repositoryService.getUsers();}
+    public List<Role> getRoles() {return repositoryService.getRoles();}
+    public boolean save(User user) {return repositoryService.save(user);}
+    public boolean updateWithPass(User user) {return repositoryService.updateWithPass(user);}
+    public boolean update(User user) {return repositoryService.update(user);}
+    public void deleteUserById(Long id) {repositoryService.deleteUserById(id);}
+    public void fillUsers() {repositoryService.fillUsers();}
+    public void fillRoles() {repositoryService.fillRoles();}
+    public void truncate() {repositoryService.truncate();}
+    public Role findRoleByName(String name) {return repositoryService.findRoleByName(name);}
+    //<<<<< ----- >>>>>
 
-    @Autowired
-    public void setUserService(UserService userService) {
-        this.userService = userService;
-    }
+//    public RepositoryService getRepositoryService() {
+//        return repositoryService;
+//    }
+
+
+//    @Autowired
+//    public void setUserService(RepositoryService repositoryService) {
+//        this.repositoryService = repositoryService;
+//    }
 }

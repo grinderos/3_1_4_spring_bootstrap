@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Users</title>
+</head>
+<body>
+<form th:method="POST" th:action="@{/logout}">
+    <input type="submit" value="выход из системы"/>
+</form><br/>
+<button onclick="window.location.href = '/to_main';">На главную</button><br/>
+
+<div><br/>
+    <button onclick="window.location.href = '/admin/new';">Добавить нового<br/> пользователя</button>
+    <table border="1">
+        <caption><h2>Список пользователей</h2></caption>
+        <thead>
+        <tr>
+            <th> id </th>
+            <th> логин </th>
+            <th> имя </th>
+            <th> фамилия </th>
+            <th> почта </th>
+            <th> возраст </th>
+            <th> список ролей </th>
+            <th> действие </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user, iterStat : ${users}">
+
+<!--            <td th:text="${user.id}"></td>-->
+<!--            <td th:text="${user.username}"></td>-->
+<!--            <td th:text="${user.age}"></td>-->
+<!--            <td th:text="${user.roles}"></td>-->
+
+            <td th:text=" ${user.getId()} "></td>
+            <td th:text=" ${user.getUsername()} "></td>
+            <td th:text=" ${user.getFirstname()} "></td>
+            <td th:text=" ${user.getLastname()} "></td>
+            <td th:text=" ${user.getEmail()} "></td>
+            <td th:text=" ${user.getAge()} "></td>
+            <td th:text=" ${user.getAuthorities()} "></td>
+            <td>
+                <form th:method="POST" th:action="@{/admin/edit?id={id}(id=${user.getId()})}">
+                    <input type="submit" value="редактировать"/>
+                </form>
+
+                <form th:method="POST" th:action="@{/admin/delete?id={id}(id=${user.getId()})}">
+                    <input type="submit" value=" удалить"/>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
