@@ -20,7 +20,7 @@
                 <h6 class="text-danger" th:text="${msg}"></h6>
             </th:block>
             <br/>
-            <h2 class="form-heading"> Заполните поля для регистрации</h2>
+            <h2 class="form-heading text-center"> Заполните поля для регистрации</h2>
             <div class="form-group">
                 <input type="text" th:field="*{username}" class="form-control" placeholder="Логин"
                        autofocus="true">
@@ -46,24 +46,26 @@
                        autofocus="true">
                 <span class="text-warning" th:if="${#fields.hasErrors('age')}" th:errors="*{age}"></span>
             </div>
+            <!--///////-->
 
-            <label>Выберите роль:</br>
-                <select size="2" id="role" name="roles" multiple="multiple">
-                    <option th:each="role : ${roles}" th:value="${role.getId()}"
-                            th:text="${role.getName().substring(5)}"></option>
-                </select>
+            <!--            <label>Выберите роль:</br>-->
+            <!--                <select size="2" id="role" name="roles" multiple="multiple">-->
+            <!--                    <option th:each="role : ${roles}" th:value="${role.getId()}"-->
+            <!--                            th:text="${role.getName().substring(5)}"></option>-->
+            <!--                </select>-->
+            <!--            </label>-->
+
+            <label><h6 class="form-heading text-center">Роль:
+                <th:block th:each="role: ${roles}">
+                    <input class="form-check-input" type="checkbox"
+                           th:field="*{roles}"
+                           th:text="${' '+role.name.substring(5)+' '}"
+                           th:value="${role.id}"/>
+                </th:block>
+            </h6>
             </label>
 
-<!--            <input type="checkbox" class="btn-check" id="btn-check" autocomplete="off">-->
-<!--            <label class="btn btn-primary" for="btn-check">Одиночный переключатель</label>-->
-
-
-            <!--        <select class="form-control" id="dropDownList">-->
-            <!--            <option value="0">Выберите роль</option>-->
-            <!--            <option th:each="role : ${roles}" th:value="${role.getName()}" th:text="${role.getName().substring(5)}"></option>-->
-            <!--        </select>-->
-
-            <!--</div>-->
+            <!--///////-->
             <div class="form-group">
                 <input type="password" th:field="*{password}" class="form-control" placeholder="Пароль">
                 <span class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
