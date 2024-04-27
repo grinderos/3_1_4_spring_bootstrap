@@ -55,23 +55,31 @@ public class RepositoryService {
         if (loadedUserFromDB != null) {
             return false;
         }
+        System.out.println("PASS in 'save()': "+user.getPassword());
         user.setPassword(PasswordEncoder.bCryptPasswordEncoder().encode(user.getPassword()));
         userRepository.save(user);
         return true;
     }
 
-    @Transactional
-    public boolean updateWithPass(User user) {
-        System.out.println("сохранение пользователя \n" + user);
-        System.out.println("сохранение пользователя \n" + user);
-        user.setPassword(PasswordEncoder.bCryptPasswordEncoder().encode(user.getPassword()));
-        userRepository.save(user);
-        return true;
-    }
+//    @Transactional
+//    public boolean updateWithPass(User user) {
+//        System.out.println("сохранение пользователя \n" + user);
+//        System.out.println("PASS in 'save()': "+user.getPassword());
+//        user.setPassword(PasswordEncoder.bCryptPasswordEncoder().encode(user.getPassword()));
+//        userRepository.save(user);
+//        return true;
+//    }
 
     @Transactional
     public boolean update(User user) {
-        System.out.println("сохранение пользователя \n" + user);
+        if (user.getPassword().length()==60 ||
+                user.getPassword().length()==0 || user.getPassword()==null) {
+            User loadedUserFromDB = findByUsername(user.getUsername());
+            user.setPassword(loadedUserFromDB.getPassword());
+        } else {
+            user.setPassword(PasswordEncoder.bCryptPasswordEncoder()
+                    .encode(user.getPassword()));
+        }
         userRepository.save(user);
         return true;
     }

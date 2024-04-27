@@ -11,6 +11,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
+import ru.kata.spring.bootstrap.model.Role;
+
+import java.util.List;
 
 @Service
 public class SecurityServiceImpl implements SecurityService{

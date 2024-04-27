@@ -49,7 +49,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public List<User> getUsers() {return repositoryService.getUsers();}
     public List<Role> getRoles() {return repositoryService.getRoles();}
     public boolean save(User user) {return repositoryService.save(user);}
-    public boolean updateWithPass(User user) {return repositoryService.updateWithPass(user);}
+//    public boolean updateWithPass(User user) {return repositoryService.updateWithPass(user);}
     public boolean update(User user) {return repositoryService.update(user);}
     public void deleteUserById(Long id) {repositoryService.deleteUserById(id);}
     public void fillUsers() {repositoryService.fillUsers();}

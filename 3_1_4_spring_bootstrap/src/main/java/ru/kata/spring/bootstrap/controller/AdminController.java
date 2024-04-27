@@ -39,7 +39,7 @@ public class AdminController {
     @GetMapping("/admin/new")
     public String newUser(Model model) {
         model.addAttribute("user", new User());
-        model.addAttribute("listRoles", userService.getRoles());
+        model.addAttribute("roles", userService.getRoles());
         return "admin/edit";
     }
 
@@ -47,7 +47,7 @@ public class AdminController {
     public String editUser(@RequestParam("id") Long id, Model model) {
         User user = userService.findUserById(id);
         model.addAttribute("user", user);
-        model.addAttribute("listRoles", userService.getRoles());
+        model.addAttribute("roles", userService.getRoles());
         return "admin/edit";
     }
 
@@ -56,9 +56,7 @@ public class AdminController {
         if (user.getRoles().isEmpty()) {
             user.addRole(userService.findRoleByName("ROLE_USER"));
         }
-        if (user.getPassword().length()==60) {
-            userService.update(user);
-        }else if (!userService.updateWithPass(user)) {
+            if (!userService.update(user)) {
             System.out.println("Пользователь не был сохранен");
             return "admin/edit";
         }

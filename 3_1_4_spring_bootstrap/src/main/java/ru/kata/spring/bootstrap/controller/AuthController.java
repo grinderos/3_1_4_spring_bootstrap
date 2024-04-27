@@ -44,15 +44,17 @@ public class AuthController {
     @GetMapping("/login")
     public String login(Model model, String error, String logout) {
         System.out.println("сработал /login");
+        if (userService.getUsers().isEmpty()) {
+            return "redirect:auth/register";
+        }
 
         if (securityService.isAuthenticated()) {
-            System.out.println("isAuthenticated() true");
             return "redirect:/admin/";
         }
         if (error != null)
-            model.addAttribute("error", "Your username and password is invalid.");
+            model.addAttribute("error", "Имя пользователя или пароль не совпадают");
         if (logout != null)
-            model.addAttribute("message", "You have been logged out successfully.");
+            model.addAttribute("message", "Успешный выход из системы");
 
         return "auth/login";
     }
@@ -65,8 +67,7 @@ public class AuthController {
         }
         if (userService.getUsers().isEmpty()) {
             ArrayList<String> messages = new ArrayList<>();
-            messages.add("В системе нет ни одного пользователя.");
-            messages.add("Зарегистрируйтесь, чтобы стать первым.");
+            messages.add("В системе нет ни одного пользователя. Зарегистрируйтесь, чтобы стать первым.");
             messageModel.addAttribute("messages", messages);
         }
         model.addAttribute("user", new User());
@@ -82,16 +83,16 @@ public class AuthController {
         userValidator.validate(user, bindingResult);
         if (bindingResult.hasErrors()) {
             model.addAttribute("roles", roles);
-            System.out.println("bindingResult.hasErrors() есть ошибки");
             return "/auth/register";
         }
         if (!userService.save(user)) {
             model.addAttribute("roles", roles);
-            System.out.println("Пользователь не был сохранен");
             return "/auth/register";
         }
         securityService.autoLogin(user.getUsername(), user.getPasswordConfirm());
-        System.out.println("-------\nАВТОЛОГИН ОТРАБОТАЛ\n---------");
+        if(user.getRoles().contains(roles.stream()
+                .filter(role -> role.getName().equals("ROLE_USER"))
+                .findFirst().get())){return "redirect:/user";}
         return "redirect:/admin";
     }
 }
