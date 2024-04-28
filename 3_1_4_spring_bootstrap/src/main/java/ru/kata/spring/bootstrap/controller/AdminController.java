@@ -12,6 +12,7 @@ import ru.kata.spring.bootstrap.model.User;
 import ru.kata.spring.bootstrap.service.UserDetailsServiceImpl;
 
 import javax.servlet.http.HttpSession;
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -25,7 +26,9 @@ public class AdminController {
     }
 
     @GetMapping("/admin")
-    public String adminPage() {
+    public String adminPage(Model model, Principal principal) {
+        User user = userService.findByUsername(principal.getName());
+        model.addAttribute("user", user);
         return "admin/admin_panel";
     }
 

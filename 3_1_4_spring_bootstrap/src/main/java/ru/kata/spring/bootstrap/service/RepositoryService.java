@@ -61,15 +61,6 @@ public class RepositoryService {
         return true;
     }
 
-//    @Transactional
-//    public boolean updateWithPass(User user) {
-//        System.out.println("сохранение пользователя \n" + user);
-//        System.out.println("PASS in 'save()': "+user.getPassword());
-//        user.setPassword(PasswordEncoder.bCryptPasswordEncoder().encode(user.getPassword()));
-//        userRepository.save(user);
-//        return true;
-//    }
-
     @Transactional
     public boolean update(User user) {
         if (user.getPassword().length()==60 ||
