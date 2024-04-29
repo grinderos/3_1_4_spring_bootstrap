@@ -27,8 +27,11 @@ public class AdminController {
 
     @GetMapping("/admin")
     public String adminPage(Model model, Principal principal) {
-        User user = userService.findByUsername(principal.getName());
-        model.addAttribute("user", user);
+        User thisUser = userService.findByUsername(principal.getName());
+        model.addAttribute("thisUser", thisUser);
+        model.addAttribute("newUser", new User());
+        model.addAttribute("allRoles", userService.getRoles());
+        model.addAttribute("allUsers", userService.getUsers());
         return "admin/admin_panel";
     }
 
@@ -61,12 +64,12 @@ public class AdminController {
         }
             if (!userService.update(user)) {
             System.out.println("Пользователь не был сохранен");
-            return "admin/edit";
+            return "redirect:/admin";
         }
-        return "redirect:admin/users";
+        return "redirect:/admin";
     }
 
-    @PostMapping("/admin/delete")
+    @PostMapping("/delete")
     public String deleteUser(@RequestParam("id") Long id, Authentication autentication, HttpSession session) {
         User deletedUser = userService.findUserById(id);
         userService.deleteUserById(id);
@@ -74,7 +77,7 @@ public class AdminController {
             session.invalidate();
             return "redirect:/";
         }
-        return "redirect:users";
+        return "redirect:/admin";
     }
 
     @GetMapping("/admin/truncate")
