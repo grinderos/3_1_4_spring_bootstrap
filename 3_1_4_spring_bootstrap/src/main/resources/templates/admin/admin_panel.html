@@ -163,12 +163,13 @@
         <div class="col">
             <div class="tab-content bg-light pt-3"
                  id="admin-tabContent">
+
+                <!--vvv Вкладки под лист юзеров и создание нового юзера vvv-->
                 <div class="tab-pane fade show active"
                      id="admin-tab"
                      role="tabpanel"
                      aria-labelledby="side-admin-tab">
 
-                    <!--vvv Вкладки под лист юзеров и создание нового юзера vvv-->
                     <ul class="nav nav-tabs"
                         role="tablist">
                         <li class="nav-item"
@@ -235,7 +236,7 @@
                                             <!--vvv кнопка редактирования vvv-->
                                             <button class="btn btn-info btn-ml"
                                                     data-bs-toggle="modal"
-                                                    th:data-bs-target="${'#eMdl'+ user.id}"
+                                                    th:data-bs-target="${'#edit'+ user.id}"
                                                     th:data-row="${user}"
                                             >Редактировать
                                             </button>
@@ -243,7 +244,7 @@
 
                                             <!--vvv модалка редактирования vvv-->
                                             <div class="modal fade"
-                                                 th:id="${'eMdl'+ user.id}"
+                                                 th:id="${'edit'+ user.id}"
                                                  tabindex="-1"
                                                  aria-labelledby="update"
                                                  aria-hidden="true">
@@ -355,35 +356,35 @@
                                                                     />
                                                                 </div>
 
-<!--                                                                <div class="mb-3">-->
-<!--                                                                    <label class="container-fluid "-->
-<!--                                                                           for="rolesUpdate">Role</label>-->
-<!--                                                                    <select class="form-control form-control-sm"-->
-<!--                                                                            id="rolesUpdate"-->
-<!--                                                                            name="roles"-->
-<!--                                                                            multiple th:value="${user.roles}"-->
-<!--                                                                            style="height: 50px; width: 300px; margin: 0 auto">-->
-<!--                                                                        <option value="1">ADMIN</option>-->
-<!--                                                                        <option selected="selected" value="2">USER-->
-<!--                                                                        </option>-->
-<!--                                                                    </select>-->
-<!--                                                                </div>-->
-                                                                    <div class="mb-3">
-                                                                        <label class="container-fluid"
-                                                                               for="roles_upd">Роль</label>
-                                                                        <h6 class="form-heading text-center"
-                                                                            id="roles_upd">
+                                                                <div class="mb-3">
+                                                                    <label class="container-fluid "
+                                                                           for="rolesUpdate">Role</label>
+                                                                    <select class="form-control form-control-sm"
+                                                                            id="rolesUpdate"
+                                                                            name="roles"
+                                                                            multiple th:value="${user.roles}"
+                                                                            style="height: 50px; width: 300px; margin: 0 auto">
+                                                                        <option value="1">ADMIN</option>
+                                                                        <option selected="selected" value="2">USER
+                                                                        </option>
+                                                                    </select>
+                                                                </div>
+                                                                <!--                                                                    <div class="mb-3">-->
+                                                                <!--                                                                        <label class="container-fluid"-->
+                                                                <!--                                                                               for="roles_upd">Роль</label>-->
+                                                                <!--                                                                        <h6 class="form-heading text-center"-->
+                                                                <!--                                                                            id="roles_upd">-->
 
-                                                                            <th:block class="form-heading text-center"
-                                                                                      id="roles_upd" th:each="role: ${allRoles}">
-                                                                                <input class="form-check-input"
-                                                                                       type="checkbox"
-                                                                                       th:field="*{user.roles}"
-                                                                                       th:text="${' '+role.name.substring(5)+' '}"
-                                                                                       th:value="${role.id}"/>
-                                                                            </th:block>
-                                                                        </h6>
-                                                                    </div>
+                                                                <!--                                                                            <th:block class="form-heading text-center"-->
+                                                                <!--                                                                                      id="roles_upd" th:each="role: ${allRoles}">-->
+                                                                <!--                                                                                <input class="form-check-input"-->
+                                                                <!--                                                                                       type="checkbox"-->
+                                                                <!--                                                                                       th:field="*{user.roles}"-->
+                                                                <!--                                                                                       th:text="${' '+role.name.substring(5)+' '}"-->
+                                                                <!--                                                                                       th:value="${role.id}"/>-->
+                                                                <!--                                                                            </th:block>-->
+                                                                <!--                                                                        </h6>-->
+                                                                <!--                                                                    </div>-->
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button"
@@ -392,7 +393,7 @@
                                                                 >Закрыть
                                                                 </button>
                                                                 <input type="submit"
-                                                                       class="btn btn-access"
+                                                                       class="btn btn-success"
                                                                        value="Обновить"/>
                                                             </div>
                                                         </form>
@@ -405,7 +406,7 @@
                                             <!--vvv кнопка удаления vvv-->
                                             <button class="btn btn-danger btn-ml"
                                                     data-bs-toggle="modal"
-                                                    th:data-bs-target="${'#dMdl'+ user.id}"
+                                                    th:data-bs-target="${'#delete'+ user.id}"
                                                     th:data-row="${user}"
                                             >Удалить
                                             </button>
@@ -413,7 +414,7 @@
 
                                             <!--vvv модалка удаления vvv-->
                                             <div class="modal fade"
-                                                 th:id="${'dMdl'+ user.id}"
+                                                 th:id="${'delete'+ user.id}"
                                                  tabindex="-1"
                                                  aria-labelledby="delete"
                                                  aria-hidden="true">
@@ -647,7 +648,8 @@
                                         <div>
                                             <button type="submit"
                                                     class="btn btn-success"
-                                            >Добавить</button>
+                                            >Добавить
+                                            </button>
                                         </div>
                                     </form>
                                 </div>
@@ -657,44 +659,46 @@
                     <!--^^^ Вкладка списка пользователей ^^^-->
                 </div>
 
-                <!-- боковая вкладка информации о текущем пользователе -->
+                <!-- информация о текущем пользователе -->
                 <div class="tab-pane fade"
                      id="user-info"
                      role="tabpanel"
                      aria-labelledby="side-user-tab">
-                    <main class="col-12">
+                    <!--                    <main class="col-12">-->
 
 
-                        <div class="mine-container">
-                            <table class="table table-striped table-hover caption-top">
-                                <div class="tab-content">
-                                    <p class="fs-5 ms-2">Инфо о текущем пользователе</p>
-                                </div>
-                                <thead>
-                                <tr>
-                                    <th>id</th>
-                                    <th>Имя пользователя</th>
-                                    <th>Имя</th>
-                                    <th>Фамилия</th>
-                                    <th>Возраст</th>
-                                    <th>email</th>
-                                    <th>Роль</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td th:text="${thisUser.id}"></td>
-                                    <td th:text="${thisUser.username}"></td>
-                                    <td th:text="${thisUser.firstname}"></td>
-                                    <td th:text="${thisUser.lastname}"></td>
-                                    <td th:text="${thisUser.age}"></td>
-                                    <td th:text="${thisUser.email}"></td>
-                                    <td th:text="${thisUser.roles}"></td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </main>
+                    <!--                        <div class="mine-container">-->
+                    <!--                            <table class="table table-striped table-hover caption-top">-->
+                    <div class="tab-content">
+                        <p class="fs-5 ms-2">Инфо о текущем пользователе</p>
+                    </div>
+                    <div class="card">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>id</th>
+                                <th>Имя пользователя</th>
+                                <th>Имя</th>
+                                <th>Фамилия</th>
+                                <th>Возраст</th>
+                                <th>email</th>
+                                <th>Роль</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td th:text="${thisUser.id}"></td>
+                                <td th:text="${thisUser.username}"></td>
+                                <td th:text="${thisUser.firstname}"></td>
+                                <td th:text="${thisUser.lastname}"></td>
+                                <td th:text="${thisUser.age}"></td>
+                                <td th:text="${thisUser.email}"></td>
+                                <td th:text="${thisUser.roles}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!--                    </main>-->
                 </div>
             </div>
         </div>
