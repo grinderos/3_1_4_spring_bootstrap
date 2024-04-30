@@ -59,6 +59,7 @@ public class AdminController {
 
     @PostMapping("/update")
     public String updateUser(@ModelAttribute("user") User user) {
+        System.out.println(user);
         if (user.getRoles().isEmpty()) {
             user.addRole(userService.findRoleByName("ROLE_USER"));
         }

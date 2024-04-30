@@ -22,7 +22,6 @@ public class User implements UserDetails {
     private Long id;
 
     @NotEmpty(message = "Поле не должно быть пустым")
-//    @Size(min = 3, max = 40, message = "Логин должен содержать не менее трех символов")
     @Column(name = "username", nullable = false, unique = true, length = 32)
     private String username;
 
@@ -36,12 +35,10 @@ public class User implements UserDetails {
     private String email;
 
     @Column(name = "age", nullable = true)
-//    @Min(value = 0, message = "Неверно указан возраст")
     private Integer age;
 
     @NotEmpty(message = "Поле не должно быть пустым")
     @Column(name = "password", nullable = false, length = 64)
-//    @Size(min = 4, max = 100, message = "Пароль должен содержать не менее трех символов")
     private String password;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE) //
@@ -176,8 +173,11 @@ public class User implements UserDetails {
         return "User:" +
                 "\nid      = " + id +
                 "\nusername= " + username +
-                "\npassword= " + password +
+                "\nfirstname= " + firstname +
+                "\nlastname= " + lastname +
+                "\nemail= " + email +
                 "\nage     = " + age +
+                "\npassword= " + password +
                 "\nroles   = " + roles;
     }
 }

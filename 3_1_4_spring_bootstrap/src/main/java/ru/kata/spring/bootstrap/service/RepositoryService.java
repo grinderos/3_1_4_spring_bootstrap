@@ -62,10 +62,12 @@ public class RepositoryService {
 
     @Transactional
     public boolean update(User user) {
+        System.out.println(user);
         if (user.getPassword().length()==60 ||
                 user.getPassword().length()==0 || user.getPassword()==null) {
 
             User loadedUserFromDB = findByUsername(user.getUsername());
+            System.out.println(loadedUserFromDB);
             user.setPassword(loadedUserFromDB.getPassword());
 
         } else {
