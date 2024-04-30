@@ -67,7 +67,7 @@ public class RepositoryService {
                 user.getPassword().length()==0 || user.getPassword()==null) {
 
             User loadedUserFromDB = findByUsername(user.getUsername());
-            System.out.println(loadedUserFromDB);
+            System.out.println("-----loadedUserFromDB\n"+loadedUserFromDB);
             user.setPassword(loadedUserFromDB.getPassword());
 
         } else {

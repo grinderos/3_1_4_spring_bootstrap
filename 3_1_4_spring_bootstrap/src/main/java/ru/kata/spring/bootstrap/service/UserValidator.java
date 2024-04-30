@@ -42,6 +42,12 @@ public class UserValidator implements Validator {
         if (user.getAge() != null && user.getAge() < 0) {
             errors.rejectValue("age", "", "Возраст не может быть отрицательным");
         }
+    }
+
+    public void validateOnReg(Object o, Errors errors) {
+        User user = (User) o;
+
+        validate(o, errors);
 
         if (user.getPasswordConfirm()==null || !user.getPasswordConfirm().equals(user.getPassword())) {
             errors.rejectValue("passwordConfirm", "", "Пароли не совпадают");

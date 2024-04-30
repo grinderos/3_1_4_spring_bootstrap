@@ -80,7 +80,7 @@ public class AuthController {
         if (user.getRoles().isEmpty()) {
             user.addRole(userService.findRoleByName("ROLE_USER"));
         }
-        userValidator.validate(user, bindingResult);
+        userValidator.validateOnReg(user, bindingResult);
         if (bindingResult.hasErrors()) {
             model.addAttribute("roles", roles);
             return "/auth/register";
@@ -90,9 +90,6 @@ public class AuthController {
             return "/auth/register";
         }
         securityService.autoLogin(user.getUsername(), user.getPasswordConfirm());
-        if(user.getRoles().contains(roles.stream()
-                .filter(role -> role.getName().equals("ROLE_USER"))
-                .findFirst().get())){return "redirect:/user";}
         return "redirect:/admin";
     }
 }

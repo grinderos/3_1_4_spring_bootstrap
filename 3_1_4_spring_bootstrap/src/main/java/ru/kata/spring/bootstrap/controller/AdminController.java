@@ -4,12 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.kata.spring.bootstrap.model.User;
 import ru.kata.spring.bootstrap.service.UserDetailsServiceImpl;
+import ru.kata.spring.bootstrap.service.UserValidator;
 
 import javax.servlet.http.HttpSession;
 import java.security.Principal;
@@ -19,10 +21,13 @@ import java.util.List;
 public class AdminController {
 
     private UserDetailsServiceImpl userService;
+    private UserValidator userValidator;
 
     @Autowired
-    public AdminController(UserDetailsServiceImpl userService) {
+    public AdminController(UserDetailsServiceImpl userService,
+                           UserValidator userValidator) {
         this.userService = userService;
+        this.userValidator = userValidator;
     }
 
     @GetMapping("/admin")
