@@ -12,7 +12,7 @@
     <title>admin_panel</title>
 </head>
 <body>
-
+<!--  -->
 <!--vvv верхняя панель vvv-->
 <nav class="navbar bg-dark border-bottom border-body navbar-expand-lg"
      data-bs-theme="dark">
@@ -36,21 +36,14 @@
                   th:text="${thisUser.username}"></span>
             <span class="navbar-brand mb-0 h1"
             > | Обладает ролью: </span>
-            <!--            <span class="navbar-brand mb-0 h1"-->
-            <!--                  th:text="${thisUser.roles} "></span> -->
-
             <th:block th:each="role: ${thisUser.roles}">
                <span class="navbar-brand mb-0 h1"
                      th:text="${' '+role.name.substring(5)+' '}"></span>
-                <!--                <input type="checkbox" th:field="*{roles}"-->
-                <!--                       th:text="${role.name}" th:value="${role.id}"/>-->
             </th:block>
             <br/><br/>
         </ul>
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
             <li class="nav-item">
-
-                <!--                <a class="btn btn-dark logout-button" aria-current="page" th:href="@{/logout}">Logout</a>-->
                 <form action="/logout"
                       method="POST">
                     <button type="submit"
@@ -80,14 +73,12 @@
 <!--^^^ верхняя панель ^^^-->
 <div class="container-fluid">
     <div class="row">
-        <!--        <div class="d-flex align-items-start mt-3 my-md-3 bd-layout">-->
         <!--vvv боковая панель vvv-->
         <div class="col-3">
             <li class="nav nav-pills flex-column pt-3 gap-1"
                 id="side-bar"
                 role="tablist"
                 aria-orientation="vertical">
-                <!--            <div class="d-flex">-->
                 <div class="container">
                     <button class="nav-link active col-12"
                             id="side-admin-tab"
@@ -123,7 +114,6 @@
                         </div>
                     </button>
                 </div>
-                <!--            <div class="d-flex">-->
                 <div class="container">
                     <button class="nav-link col-12"
                             id="side-user-tab"
@@ -151,12 +141,12 @@
                                  1 0 0 1 1-1h12a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H8.96c.026-.163.04-.33.04-.5C9 10.567
                                  7.21 9 5 9c-2.086 0-3.8 1.398-3.984 3.181A1.006 1.006 0 0 1 1 12z"/>
                                 </svg>
-                            </li>
-                        </div>
-                    </button>
-                </div>
-            </li>
-        </div>
+                            </li><!-- col-3 -->
+                        </div><!-- row -->
+                    </button><!-- nav-link col-12 -->
+                </div><!-- container -->
+            </li><!-- nav nav-pills flex-column pt-3 gap-1 -->
+        </div><!-- col-3 -->
         <!--^^^ боковая панель ^^^-->
 
         <!--vvv тело вкладки боковой панели vvv-->
@@ -164,7 +154,7 @@
             <div class="tab-content bg-light pt-3"
                  id="admin-tabContent">
 
-                <!--vvv Вкладки под лист юзеров и создание нового юзера vvv-->
+                <!--vvv Лист юзеров vvv-->
                 <div class="tab-pane fade show active"
                      id="admin-tab"
                      role="tabpanel"
@@ -208,7 +198,6 @@
                              aria-labelledby="admins-tab">
                             <div class="card">
                                 <table class="table table-striped table-hover caption-top">
-                                    <!--                                <p class="fs-5 ms-2">All users</p>-->
                                     <thead>
                                     <tr>
                                         <th>id</th>
@@ -231,16 +220,14 @@
                                         <td th:text="${user.age}"></td>
                                         <td th:text="${user.email}"></td>
                                         <td th:text="${user.roles}"></td>
-                                        <td>
+                                        <td><!-- колонка с кнопкой редактировать -->
 
-                                            <!--vvv кнопка редактирования vvv-->
                                             <button class="btn btn-info btn-ml"
                                                     data-bs-toggle="modal"
                                                     th:data-bs-target="${'#edit'+ user.id}"
                                                     th:data-row="${user}"
                                             >Редактировать
                                             </button>
-                                            <!--^^^ кнопка редактирования ^^^-->
 
                                             <!--vvv модалка редактирования vvv-->
                                             <div class="modal fade"
@@ -362,31 +349,31 @@
                                                                     <select class="form-control form-control-sm"
                                                                             id="rolesUpdate"
                                                                             name="roles"
-                                                                            multiple th:value="${user.roles}"
-                                                                            style="height: 50px; width: 300px; margin: 0 auto">
+                                                                            multiple th:value="${user.roles}">
+                                                                        <!--                                                                            style="height: 50px; width: 300px; margin: 0 auto">-->
                                                                         <option value="1">ADMIN</option>
                                                                         <option selected="selected" value="2">USER
                                                                         </option>
                                                                     </select>
                                                                 </div>
-                                                                <!--                                                                    <div class="mb-3">-->
-                                                                <!--                                                                        <label class="container-fluid"-->
-                                                                <!--                                                                               for="roles_upd">Роль</label>-->
-                                                                <!--                                                                        <h6 class="form-heading text-center"-->
-                                                                <!--                                                                            id="roles_upd">-->
+                                                                <!--    <div class="mb-3">-->
+                                                                <!--        <label class="container-fluid"-->
+                                                                <!--               for="roles_upd">Роль</label>-->
+                                                                <!--        <h6 class="form-heading text-center"-->
+                                                                <!--            id="roles_upd">-->
 
-                                                                <!--                                                                            <th:block class="form-heading text-center"-->
-                                                                <!--                                                                                      id="roles_upd" th:each="role: ${allRoles}">-->
-                                                                <!--                                                                                <input class="form-check-input"-->
-                                                                <!--                                                                                       type="checkbox"-->
-                                                                <!--                                                                                       th:field="*{user.roles}"-->
-                                                                <!--                                                                                       th:text="${' '+role.name.substring(5)+' '}"-->
-                                                                <!--                                                                                       th:value="${role.id}"/>-->
-                                                                <!--                                                                            </th:block>-->
-                                                                <!--                                                                        </h6>-->
-                                                                <!--                                                                    </div>-->
-                                                            </div>
-                                                            <div class="modal-footer">
+                                                                <!--            <th:block class="form-heading text-center"-->
+                                                                <!--                      id="roles_upd" th:each="role: ${allRoles}">-->
+                                                                <!--                <input class="form-check-input"-->
+                                                                <!--                       type="checkbox"-->
+                                                                <!--                       th:field="*{user.roles}"-->
+                                                                <!--                       th:text="${' '+role.name.substring(5)+' '}"-->
+                                                                <!--                       th:value="${role.id}"/>-->
+                                                                <!--            </th:block>-->
+                                                                <!--        </h6>-->
+                                                                <!--    </div>-->
+                                                            </div><!--  -->
+                                                            <div class="modal-footer justify-content-evenly">
                                                                 <button type="button"
                                                                         class="btn btn-secondary"
                                                                         data-bs-dismiss="modal"
@@ -396,21 +383,20 @@
                                                                        class="btn btn-success"
                                                                        value="Обновить"/>
                                                             </div>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                                        </form><!-- POST /update -->
+                                                    </div><!-- modal-content -->
+                                                </div><!-- modal-dialog -->
+                                            </div><!-- modal fade -->
                                             <!--^^^ модалка редактирования ^^^-->
-                                        </td>
-                                        <td>
-                                            <!--vvv кнопка удаления vvv-->
+                                        </td><!-- колонка с кнопкой редактировать -->
+
+                                        <td><!-- колонка с кнопкой удалить -->
                                             <button class="btn btn-danger btn-ml"
                                                     data-bs-toggle="modal"
                                                     th:data-bs-target="${'#delete'+ user.id}"
                                                     th:data-row="${user}"
                                             >Удалить
                                             </button>
-                                            <!--^^^ кнопка удаления ^^^-->
 
                                             <!--vvv модалка удаления vvv-->
                                             <div class="modal fade"
@@ -503,15 +489,16 @@
                                                                     <label for="roles_del"
                                                                            class="col-form-label"
                                                                     >Роль</label>
-                                                                    <input type="password"
-                                                                           th:value="${user.roles}"
-                                                                           name="roles"
-                                                                           class="form-control"
-                                                                           id="roles_del"
-                                                                           readonly/>
+                                                                    <h6 class="form-heading text-center" id="allRoles">
+                                                                        <th:block th:each="role: ${user.roles}">
+                                                                        <span type="checkbox"
+                                                                              id="roles_del"
+                                                                              th:text="${': '+role.name.substring(5)+' '}"></span>
+                                                                        </th:block>
+                                                                    </h6>
                                                                 </div>
                                                             </div>
-                                                            <div class="modal-footer">
+                                                            <div class="modal-footer justify-content-evenly">
                                                                 <button type="button"
                                                                         class="btn btn-secondary"
                                                                         data-bs-dismiss="modal"
@@ -521,22 +508,21 @@
                                                                        class="btn btn-danger"
                                                                        value="Удалить"/>
                                                             </div>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                                        </form><!-- POST /delete -->
+                                                    </div><!-- modal-content -->
+                                                </div><!-- modal-dialog -->
+                                            </div><!-- modal fade -->
                                             <!--^^^ модалка удаления ^^^-->
 
-                                        </td>
-                                    </tr>
+                                        </td><!-- колонка с кнопкой удалить -->
+                                    </tr><!-- итератор таблицы -->
                                     </tbody>
-                                </table>
-                            </div>
-                        </div>
+                                </table><!-- table table-striped table-hover caption-top -->
+                            </div><!-- card -->
+                        </div><!-- tab-pane fade show active -->
                         <!--  -->
                         <div class="tab-pane fade"
                              id="new-user">
-                            <!--                             th:classappend="${#fields.hasErrors() ? 'show active' : ''}"-->
                             <div class="card">
                                 <h5 class="card-header"
                                 >Добавить нового пользователя</h5>
@@ -551,12 +537,12 @@
                                         <input class="form-control"
                                                type="text"
                                                name="username"
-                                               id="username_new"
-                                               style="height: 30px; width: 300px; margin: 0 auto"
-                                               placeholder="Логин"
-                                               minlength="3"
-                                               maxlength="32"
-                                               required
+                                               id="username_new">
+                                        <!--                                               style="height: 30px; width: 300px; margin: 0 auto"-->
+                                        placeholder="Логин"
+                                        minlength="3"
+                                        maxlength="32"
+                                        required
                                         /><br>
 
                                         <label class="font-weight-bold"
@@ -566,11 +552,13 @@
                                                type="text"
                                                name="firstname"
                                                id="firstname_new"
-                                               style="height: 30px; width: 300px; margin: 0 auto"
+
                                                placeholder="Имя"
                                                minlength="0"
                                                maxlength="32"
-                                        /><br>
+                                        />
+                                        <!--                                               style="height: 30px; width: 300px; margin: 0 auto"-->
+                                        <br>
 
                                         <label class="font-weight-bold"
                                                for="lastname_new"
@@ -579,22 +567,22 @@
                                                type="text"
                                                name="lastname"
                                                id="lastname_new"
-                                               style="height: 30px; width: 300px; margin: 0 auto"
+
                                                placeholder="Фамилия"
                                                minlength="0"
                                                maxlength="32"
                                         /><br>
-
+                                        <!--                                        style="height: 30px; width: 300px; margin: 0 auto"-->
                                         <label class="font-weight-bold"
                                                for="age_new"
                                         >age</label><br>
                                         <input class="form-control"
                                                type="number"
                                                name="age"
-                                               id="age_new"
-                                               style="height: 30px; width: 300px; margin: 0 auto"
-                                               placeholder="Возраст"
-                                               min="0" max="100"
+                                               id="age_new">
+                                        <!--                                               style="height: 30px; width: 300px; margin: 0 auto"-->
+                                        placeholder="Возраст"
+                                        min="0" max="100"
                                         /><br>
 
                                         <label class="font-weight-bold"
@@ -603,12 +591,12 @@
                                         <input class="form-control" type="text"
                                                name="email"
                                                id="email_new"
-                                               style="height: 30px; width: 300px; margin: 0 auto"
+
                                                placeholder="email"
                                                minlength="0"
                                                maxlength="32"
                                         /><br>
-
+                                        <!--                                        style="height: 30px; width: 300px; margin: 0 auto"-->
                                         <label class="font-weight-bold"
                                                for="password_new"
                                         >Пароль</label><br>
@@ -616,19 +604,20 @@
                                                type="text"
                                                name="password"
                                                id="password_new"
-                                               style="height: 30px; width: 300px; margin: 0 auto"
+
                                                placeholder="Пароль"
                                                minlength="4"
                                                maxlength="32"
                                         /><br>
-
+                                        <!--                                        style="height: 30px; width: 300px; margin: 0 auto"-->
                                         <label class="font-weight-bold"
                                         >Роль: </label>
                                         <select class="form-control form-control-sm"
                                                 name="roles"
-                                                multiple th:value="${newUser.getRoles}"
-                                                style="height: 50px; width: 300px; margin: 0 auto">
+                                                multiple th:value="${newUser.getRoles}">
+
                                             <option value="1">ADMIN</option>
+                                            <!--                                        style="height: 50px; width: 300px; margin: 0 auto">-->
                                             <option selected="selected"
                                                     value="2"
                                             >USER
@@ -651,24 +640,19 @@
                                             >Добавить
                                             </button>
                                         </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                                    </form><!-- POST /update -->
+                                </div><!-- card-body text-center -->
+                            </div><!-- card -->
+                        </div><!-- tab-pane fade -->
+                    </div><!-- tab-content -->
                     <!--^^^ Вкладка списка пользователей ^^^-->
-                </div>
+                </div><!-- tab-pane fade show active -->
 
                 <!-- информация о текущем пользователе -->
                 <div class="tab-pane fade"
                      id="user-info"
                      role="tabpanel"
                      aria-labelledby="side-user-tab">
-                    <!--                    <main class="col-12">-->
-
-
-                    <!--                        <div class="mine-container">-->
-                    <!--                            <table class="table table-striped table-hover caption-top">-->
                     <div class="tab-content">
                         <p class="fs-5 ms-2">Инфо о текущем пользователе</p>
                     </div>
@@ -706,39 +690,6 @@
         <!--        </div>-->
     </div><!--  row   -->
 </div><!--   container-fluid     -->
-
-
-<!--^^^ боковая панель ^^^-->
-
-
-<!--<form th:method="POST" th:action="@{/logout}">-->
-<!--    <input type="submit" value="выход из системы"/>-->
-<!--</form><br/>-->
-<!--<h2>Страница администратора</h2>-->
-<!--<br>-->
-<!--<table border="1">-->
-<!--    <th>-->
-<!--        <button onclick="window.location.href = '/user';"><h4>Показать информацию о<br/> текущем пользователе</h4></button>-->
-<!--    </th>-->
-<!--    <th>-->
-<!--        <button onclick="window.location.href = '/admin/users';"><h4>Показать список<br/>всех пользователей</h4></button>-->
-<!--    </th>-->
-<!--    <th>-->
-<!--        <button onclick="window.location.href = '/admin/new';"><h4>Добавить нового<br/> пользователя</h4></button>-->
-<!--    </th>-->
-
-<!--</table>-->
-<!--<br/>-->
-<!--<table border="1">-->
-<!--    <th>-->
-<!--        <button onclick="window.location.href = '/admin/truncate';"><h4>Очистить таблицу<br/> пользователей</h4></button>-->
-<!--    </th>-->
-<!--    <th>-->
-<!--        <button onclick="window.location.href = '/fillUsers';"><h4>Заполнить таблицы стандартными<br/>-->
-<!--            пользователями: 'admin' и 'user'-->
-<!--        </h4></button>-->
-<!--    </th>-->
-<!--</table>-->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
