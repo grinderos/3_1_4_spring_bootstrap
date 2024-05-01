@@ -24,21 +24,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     protected void configure(HttpSecurity http) throws Exception {
         http
-//                //отключаем защиту от межсайтовой подделки запросов
-//                .csrf().disable()
+//                .csrf().disable() //отключаем защиту от межсайтовой подделки запросов
                 .authorizeRequests()
-                .antMatchers("/", "/start", "/login", "/auth/**", "/error", "/fillUsers", "/fillRoles","/logout")
+                .antMatchers("/", "/start", "/login", "/auth/**", "/error", "/fillUsers", "/fillRoles", "/truncate","/logout")
                 .permitAll()
-                .antMatchers("/admin").hasAnyRole("ADMIN", "USER")
-                .antMatchers( "/update", "/delete").hasRole("ADMIN")
+                .antMatchers("/admin", "/update", "/delete", "/new").hasRole("ADMIN")
+                .antMatchers("/user").hasAnyRole("USER","ADMIN")
+
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
                 .successHandler(successUserHandler)
                 .loginPage("/login")
                 .loginProcessingUrl("/process_login")
-//                .successForwardUrl("/admin")
-
+                .successForwardUrl("/admin")
                 .permitAll()
                 .and()
                 .logout()

@@ -75,11 +75,16 @@
     <div class="row">
         <!--vvv боковая панель vvv-->
         <div class="col-3">
-            <li class="nav nav-pills flex-column pt-3 gap-1"
+            <ul class="nav nav-pills flex-column pt-3 gap-1"
                 id="side-bar"
                 role="tablist"
                 aria-orientation="vertical">
-                <div class="container">
+<!--                <div class="container">-->
+                <div class="nav-item">
+                    <!--                    <li class="nav-item"-->
+                    <!--                        sec:authorize="hasRole('ROLE_ADMIN')"-->
+                    <!--                        role="presentation"-->
+                    <!--                    >-->
                     <button class="nav-link active col-12"
                             id="side-admin-tab"
                             data-bs-toggle="pill"
@@ -113,15 +118,19 @@
                             </li>
                         </div>
                     </button>
+                    <!--                    </li>-->
                 </div>
-                <div class="container">
+<!--                <div class="container">-->
+                <div class="nav-item">
+                    <!--                    <li class="nav-item"-->
+                    <!--                        role="presentation">-->
                     <button class="nav-link col-12"
                             id="side-user-tab"
                             data-bs-toggle="pill"
                             role="tab"
                             href="#user-info"
                             aria-controls="user-panel"
-                            aria-selected="true">
+                            aria-selected="false">
                         <div class="row">
                             <li class="col-9 fw-bold text-start"
                             >Информация о текущем пользователе
@@ -134,23 +143,25 @@
                                      class="bi bi-person-vcard"
                                      viewBox="0 0 16 16">
                                     <path d="M5 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4m4-2.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0
-                                1h-4a.5.5 0 0 1-.5-.5M9 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4A.5.5 0 0 1 9 8m1
-                                2.5a.5.5 0 0 1 .5-.5h3a.5.5
-                                0 0 1 0 1h-3a.5.5 0 0 1-.5-.5"/>
+                                        1h-4a.5.5 0 0 1-.5-.5M9 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4A.5.5 0 0 1 9 8m1
+                                        2.5a.5.5 0 0 1 .5-.5h3a.5.5
+                                        0 0 1 0 1h-3a.5.5 0 0 1-.5-.5"/>
                                     <path d="M2 2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2zM1 4a1
-                                 1 0 0 1 1-1h12a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H8.96c.026-.163.04-.33.04-.5C9 10.567
-                                 7.21 9 5 9c-2.086 0-3.8 1.398-3.984 3.181A1.006 1.006 0 0 1 1 12z"/>
+                                         1 0 0 1 1-1h12a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H8.96c.026-.163.04-.33.04-.5C9 10.567
+                                         7.21 9 5 9c-2.086 0-3.8 1.398-3.984 3.181A1.006 1.006 0 0 1 1 12z"/>
                                 </svg>
                             </li><!-- col-3 -->
                         </div><!-- row -->
                     </button><!-- nav-link col-12 -->
+                    <!--                    </li>&lt;!&ndash; nav-item &ndash;&gt;-->
                 </div><!-- container -->
-            </li><!-- nav nav-pills flex-column pt-3 gap-1 -->
+            </ul><!--nav nav-pills flex-column pt-3 gap-1-->
         </div><!-- col-3 -->
-        <!--^^^ боковая панель ^^^-->
 
+        <!--^^^ боковая панель ^^^-->
         <!--vvv тело вкладки боковой панели vvv-->
-        <div class="col">
+
+        <div class="col-9">
             <div class="tab-content bg-light pt-3"
                  id="admin-tabContent">
 
@@ -537,7 +548,7 @@
                                 <div class="card-body text-center fw-bold">
                                     <form class="offset-4 col-4"
                                           th:method="POST"
-                                          th:action="@{/update}"
+                                          th:action="@{/new}"
                                           th:object="${newUser}">
 
                                         <label class="font-weight-bold"
@@ -638,7 +649,6 @@
                                                    th:value="${role.id}"/>
                                         </th:block>
 
-
                                         <!-------------------------------------------------------------------------------------------------------------->
                                         <br/>
                                         <br/>
@@ -689,7 +699,6 @@
                                     <th:block th:each="role: ${thisUser.roles}">
                                         <span type="checkbox"
                                               th:text="${' '+role.name.substring(5)+' '}">
-
                                         </span>
                                     </th:block>
                                 </td>

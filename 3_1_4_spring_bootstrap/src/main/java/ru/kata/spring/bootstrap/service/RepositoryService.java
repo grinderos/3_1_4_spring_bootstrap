@@ -47,7 +47,9 @@ public class RepositoryService {
     }
 
     @Transactional(readOnly = true)
-    public Role findRoleByName(String name) {return roleRepository.findByName(name);}
+    public Role findRoleByName(String name) {
+        return roleRepository.findByName(name);
+    }
 
     @Transactional
     public boolean save(User user) {
@@ -62,18 +64,22 @@ public class RepositoryService {
 
     @Transactional
     public boolean update(User user) {
-        System.out.println(user);
-        if (user.getPassword().length()==60 ||
-                user.getPassword().length()==0 || user.getPassword()==null) {
-
-            User loadedUserFromDB = findByUsername(user.getUsername());
-            System.out.println("-----loadedUserFromDB\n"+loadedUserFromDB);
+        System.out.println("\nПОПЫТКА ОБНОВИТЬ ЮЗЕРА:\n"+user);
+        User loadedUserFromDB;
+        if ((loadedUserFromDB = findUserById(user.getId())) == null) {
+            return false;
+        }
+//        if (user.getPassword().length()==60 ||
+//                user.getPassword().length()==0 || user.getPassword()==null) {
+        if (user.getPassword() == null ||
+                user.getPassword().equals(loadedUserFromDB.getPassword()) ||
+                user.getPassword().length() == 0) {
             user.setPassword(loadedUserFromDB.getPassword());
-
         } else {
             user.setPassword(PasswordEncoder.bCryptPasswordEncoder()
                     .encode(user.getPassword()));
         }
+        System.out.println("\nЮЗЕР ОБНОВЛЕН");
         userRepository.save(user);
         return true;
     }
@@ -115,7 +121,9 @@ public class RepositoryService {
 
     @Transactional
     public void truncate() {
+        userRepository.setForeignKeyChecksDisabled();
         userRepository.truncateUsers();
         userRepository.truncateUser_role();
+        userRepository.setForeignKeyChecksEnabled();
     }
 }

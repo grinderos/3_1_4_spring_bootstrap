@@ -16,7 +16,7 @@ import ru.kata.spring.bootstrap.model.Role;
 import java.util.List;
 
 @Service
-public class SecurityServiceImpl implements SecurityService{
+public class SecurityServiceImpl implements SecurityService {
 
     private final AuthenticationManager authenticationManager;
     private final UserDetailsService userDetailsService;
@@ -36,7 +36,7 @@ public class SecurityServiceImpl implements SecurityService{
                 AnonymousAuthenticationToken.class.isAssignableFrom(authentication.getClass())) {
             return false;
         }
-        System.out.println("--------\nпроверка аутентификации "+authentication.getName()+"\n-------\n"+authentication.isAuthenticated()+"\n-------");
+        System.out.println("--------\nпроверка аутентификации " + authentication.getName() + "\n-------\n" + authentication.isAuthenticated() + "\n-------");
         System.out.println();
         return authentication.isAuthenticated();
     }
@@ -44,14 +44,24 @@ public class SecurityServiceImpl implements SecurityService{
     @Override
     public void autoLogin(String username, String password) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
-                new UsernamePasswordAuthenticationToken(userDetails, password, userDetails.getAuthorities());
+        setAuthentication(userDetails, username, password);
+    }
 
-        authenticationManager.authenticate(usernamePasswordAuthenticationToken);
-        System.out.println("передача токена в менеджер");
-        if (usernamePasswordAuthenticationToken.isAuthenticated()) {
-            SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-            System.out.println(">>>>>>\nУспешный автоматический вход\n<<<<<<<<<<<<<");
+    public void setAuthenticationAfterChangeUsername(UserDetails userDetails) {
+        setAuthentication(userDetails, userDetails.getUsername(), userDetails.getPassword());
+    }
+
+
+    public void setAuthentication(UserDetails userDetails, String username, String password) {
+        System.out.println("начало setAuthentication\n");
+        UsernamePasswordAuthenticationToken token =
+                new UsernamePasswordAuthenticationToken(userDetails, password, userDetails.getAuthorities());
+        System.out.println("перед authenticationManager.authenticate(token);\n");
+        authenticationManager.authenticate(token);
+        System.out.println("\nзавершена передача токена в менеджер\n");
+        if (token.isAuthenticated()) {
+            SecurityContextHolder.getContext().setAuthentication(token);
+            System.out.println(">>>>>>>>>>>>>>>\nТокен загружен в КонтекстХолдер\n<<<<<<<<<<<<<<<");
             logger.debug(String.format("Успешный автоматический вход '%s'!", username));
         }
     }

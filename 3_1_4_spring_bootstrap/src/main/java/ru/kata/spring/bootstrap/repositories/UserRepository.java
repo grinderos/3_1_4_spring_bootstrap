@@ -20,4 +20,14 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Transactional
     @Query(value = "truncate table user_role;", nativeQuery = true)
     void truncateUser_role();
+
+    @Modifying
+    @Transactional
+    @Query(value = "set foreign_key_checks = 0;", nativeQuery = true)
+    void setForeignKeyChecksDisabled();
+
+    @Modifying
+    @Transactional
+    @Query(value = "set foreign_key_checks = 1;", nativeQuery = true)
+    void setForeignKeyChecksEnabled();
 }

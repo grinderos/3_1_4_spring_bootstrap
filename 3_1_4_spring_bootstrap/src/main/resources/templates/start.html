@@ -14,30 +14,34 @@
 <div class="container">
     <form class="form">
         <div class="d-grid gap-2 col-3 mx-auto">
-        <h2 class="form-heading text-center"> Привет!</h2><br/>
+            <h2 class="form-heading text-center"> Привет!</h2><br/>
 
-        <a class="btn btn-success btn-block btn-lg"
-           th:href="@{/login}"
-           role="button"
-           target="_self">Вход в систему</a>
+            <a class="btn btn-success btn-block btn-lg"
+               th:href="@{/login}"
+               role="button"
+               target="_self">Вход в систему</a>
 
-        <a class="btn btn-primary btn-block btn-lg"
-           th:href="@{/auth/register}"
-           target="_self">Регистрация</a>
+            <a class="btn btn-primary btn-block btn-lg"
+               th:href="@{/auth/register}"
+               target="_self">Регистрация</a>
 
         </div>
     </form>
     <br/>
     <form class="form">
         <div class="d-grid gap-2 col-3 mx-auto">
-        <a class="btn btn-secondary"
-           th:href="@{/fillUsers}"
-           target="_self">Заполнить таблицы стандартными<br/>
-            пользователями: 'admin' и 'user'</a>
-        <a class="btn btn-secondary"
-           th:href="@{/fillRoles}"
-           target="_self">Заполнить таблицы стандартными<br/>
-            ролями: 'ROLE_ADMIN' и 'ROLE_USER'</a>
+            <a class="btn btn-secondary"
+               th:href="@{/fillUsers}"
+               target="_self">Заполнить таблицы стандартными<br/>
+                пользователями: 'admin' и 'user'</a>
+            <a class="btn btn-secondary"
+               th:href="@{/fillRoles}"
+               target="_self">Заполнить таблицы стандартными<br/>
+                ролями: 'ROLE_ADMIN' и 'ROLE_USER'</a>
+
+            <a class="btn btn-dark"
+               th:href="@{/truncate}"
+               target="_self">Очистить таблицу пользователей</a>
         </div>
     </form>
 </div>

@@ -1,6 +1,7 @@
 package ru.kata.spring.bootstrap.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -47,15 +48,14 @@ public class AuthController {
         if (userService.getUsers().isEmpty()) {
             return "redirect:auth/register";
         }
-
         if (securityService.isAuthenticated()) {
+            System.out.println("this user authenticated");
             return "redirect:/admin/";
         }
         if (error != null)
             model.addAttribute("error", "Имя пользователя или пароль не совпадают");
         if (logout != null)
             model.addAttribute("message", "Успешный выход из системы");
-
         return "auth/login";
     }
 
@@ -90,6 +90,9 @@ public class AuthController {
             return "/auth/register";
         }
         securityService.autoLogin(user.getUsername(), user.getPasswordConfirm());
+        if (!user.getRoles().contains(userService.findRoleByName("ROLE_ADMIN"))) {
+            return "redirect:/user";
+        }
         return "redirect:/admin";
     }
 }
