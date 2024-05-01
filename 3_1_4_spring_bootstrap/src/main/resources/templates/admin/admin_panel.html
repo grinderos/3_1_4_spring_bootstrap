@@ -219,7 +219,12 @@
                                         <td th:text="${user.lastname}"></td>
                                         <td th:text="${user.age}"></td>
                                         <td th:text="${user.email}"></td>
-                                        <td th:text="${user.roles}"></td>
+                                        <td>
+                                            <th:block th:each="role: ${user.roles}">
+                                                <span type="checkbox"
+                                                      th:text="${' '+role.name.substring(5)+' '}"></span>
+                                            </th:block>
+                                        </td>
                                         <td><!-- колонка с кнопкой редактировать -->
 
                                             <button class="btn btn-info btn-ml"
@@ -247,10 +252,11 @@
                                                                     data-bs-dismiss="modal"
                                                                     aria-label="Close"></button>
                                                         </div>
-                                                        <form class="offset-2 col-8"
+                                                        <form class="offset-1 col-10"
                                                               th:method="POST"
-                                                              th:object="${user}"
-                                                              th:action="@{/update}">
+                                                              th:action="@{/update}"
+                                                              th:object="${newUser}"
+                                                        >
 
                                                             <div class="modal-body">
 
@@ -345,36 +351,32 @@
                                                                     />
                                                                 </div>
 
-                                                                <div class="mb-3">
-                                                                    <label class="container-fluid "
-                                                                           for="rolesUpdate">Role</label>
-                                                                    <select class="form-control form-control-sm"
-                                                                            id="rolesUpdate"
-                                                                            name="roles"
-                                                                            style="height: 60px;"
-                                                                            multiple th:value="${user.roles}">
-                                                                        <!--                                                                            style="height: 50px; width: 300px; margin: 0 auto">-->
-                                                                        <option value="1">ADMIN</option>
-                                                                        <option selected="selected" value="2">USER
-                                                                        </option>
-                                                                    </select>
-                                                                </div>
-                                                                <!--    <div class="mb-3">-->
-                                                                <!--        <label class="container-fluid"-->
-                                                                <!--               for="roles_upd">Роль</label>-->
-                                                                <!--        <h6 class="form-heading text-center"-->
-                                                                <!--            id="roles_upd">-->
+                                                                <!--                                                                <div class="mb-3">-->
+                                                                <!--                                                                    <label class="container-fluid "-->
+                                                                <!--                                                                           for="rolesUpdate">Role</label>-->
+                                                                <!--                                                                    <select class="form-control form-control-sm"-->
+                                                                <!--                                                                            id="rolesUpdate"-->
+                                                                <!--                                                                            name="roles"-->
+                                                                <!--                                                                            style="height: 60px;"-->
+                                                                <!--                                                                            multiple th:value="${user.roles}">-->
+                                                                <!--                                                                        <option value="1">ADMIN</option>-->
+                                                                <!--                                                                        <option selected="selected" value="2">USER-->
+                                                                <!--                                                                        </option>-->
+                                                                <!--                                                                    </select>-->
+                                                                <!--                                                                </div>-->
+                                                                <!-------------------------------------------------------------------------------------------------------------->
+                                                                <label class="font-weight-bold"
+                                                                >Роль:</label>
+                                                                <th:block th:each="role: ${allRoles}">
+                                                                    <input class="form-check-input"
+                                                                           type="checkbox"
+                                                                           th:field="*{roles}"
+                                                                           th:text="${' '+role.name.substring(5)+' '}"
+                                                                           th:value="${role.id}"/>
+                                                                </th:block>
 
-                                                                <!--            <th:block class="form-heading text-center"-->
-                                                                <!--                      id="roles_upd" th:each="role: ${allRoles}">-->
-                                                                <!--                <input class="form-check-input"-->
-                                                                <!--                       type="checkbox"-->
-                                                                <!--                       th:field="*{user.roles}"-->
-                                                                <!--                       th:text="${' '+role.name.substring(5)+' '}"-->
-                                                                <!--                       th:value="${role.id}"/>-->
-                                                                <!--            </th:block>-->
-                                                                <!--        </h6>-->
-                                                                <!--    </div>-->
+
+                                                                <!-------------------------------------------------------------------------------------------------------------->
                                                             </div><!--  -->
                                                             <div class="modal-footer justify-content-evenly">
                                                                 <button type="button"
@@ -419,7 +421,7 @@
 
                                                             </button>
                                                         </div>
-                                                        <form class="offset-2 col-8"
+                                                        <form class="offset-1 col-10"
                                                               th:method="POST"
                                                               th:action="@{/delete}"
                                                               th:object="${user.id}">
@@ -444,7 +446,7 @@
                                                                            name="username"
                                                                            class="form-control"
                                                                            id="username_del"
-                                                                           readonly/>
+                                                                           disabled readonly/>
                                                                 </div>
                                                                 <div class="mb-3">
                                                                     <label for="firstname_del"
@@ -455,7 +457,7 @@
                                                                            name="firstname"
                                                                            class="form-control"
                                                                            id="firstname_del"
-                                                                           readonly/>
+                                                                           disabled readonly/>
                                                                 </div>
                                                                 <div class="mb-3">
                                                                     <label for="lastname_del"
@@ -466,7 +468,7 @@
                                                                            name="lastname"
                                                                            class="form-control"
                                                                            id="lastname_del"
-                                                                           readonly/>
+                                                                           disabled readonly/>
                                                                 </div>
                                                                 <div class="mb-3">
                                                                     <label for="age_del"
@@ -477,7 +479,7 @@
                                                                            name="age"
                                                                            class="form-control"
                                                                            id="age_del"
-                                                                           readonly/>
+                                                                           disabled readonly/>
                                                                 </div>
                                                                 <div class="mb-3">
                                                                     <label for="email_del"
@@ -488,7 +490,7 @@
                                                                            name="email"
                                                                            class="form-control"
                                                                            id="email_del"
-                                                                           readonly/>
+                                                                           disabled readonly/>
                                                                 </div>
                                                                 <div class="mb-3">
                                                                     <label for="roles_del"
@@ -498,7 +500,7 @@
                                                                         <th:block th:each="role: ${user.roles}">
                                                                         <span type="checkbox"
                                                                               id="roles_del"
-                                                                              th:text="${': '+role.name.substring(5)+' '}"></span>
+                                                                              th:text="${' '+role.name.substring(5)+' '}"></span>
                                                                         </th:block>
                                                                     </h6>
                                                                 </div>
@@ -517,6 +519,7 @@
                                                     </div><!-- modal-content -->
                                                 </div><!-- modal-dialog -->
                                             </div><!-- modal fade -->
+
                                             <!--^^^ модалка удаления ^^^-->
 
                                         </td><!-- колонка с кнопкой удалить -->
@@ -532,7 +535,8 @@
                                 <h5 class="card-header"
                                 >Добавить нового пользователя</h5>
                                 <div class="card-body text-center fw-bold">
-                                    <form th:method="POST"
+                                    <form class="offset-4 col-4"
+                                          th:method="POST"
                                           th:action="@{/update}"
                                           th:object="${newUser}">
 
@@ -543,7 +547,6 @@
                                                type="text"
                                                name="username"
                                                id="username_new"
-                                               style="height: 30px; width: 300px; margin: 0 auto"
                                                placeholder="Логин"
                                                minlength="3"
                                                maxlength="32"
@@ -560,7 +563,6 @@
                                                placeholder="Имя"
                                                minlength="0"
                                                maxlength="32"
-                                               style="height: 30px; width: 300px; margin: 0 auto"
                                         />
 
                                         <br>
@@ -575,7 +577,6 @@
                                                placeholder="Фамилия"
                                                minlength="0"
                                                maxlength="32"
-                                               style="height: 30px; width: 300px; margin: 0 auto"
                                         /><br>
 
                                         <label class="font-weight-bold"
@@ -587,7 +588,6 @@
                                                id="age_new"
                                                placeholder="Возраст"
                                                min="0" max="100"
-                                               style="height: 30px; width: 300px; margin: 0 auto"
                                         /><br>
 
                                         <label class="font-weight-bold"
@@ -599,7 +599,6 @@
                                                placeholder="email"
                                                minlength="0"
                                                maxlength="32"
-                                               style="height: 30px; width: 300px; margin: 0 auto"
                                         /><br>
 
                                         <label class="font-weight-bold"
@@ -612,35 +611,38 @@
                                                placeholder="Пароль"
                                                minlength="4"
                                                maxlength="32"
-                                               style="height: 30px; width: 300px; margin: 0 auto"
                                         /><br>
 
+                                        <!--                                        <label class="font-weight-bold"-->
+                                        <!--                                        >Роль: </label>-->
+                                        <!--                                        <select class="form-control form-control-sm"-->
+                                        <!--                                                name="roles"-->
+                                        <!--                                                multiple th:value="${newUser.getRoles}"-->
+                                        <!--                                                style="height: 50px; width: 300px; margin: 0 auto">-->
+
+                                        <!--                                            <option value="1">ADMIN</option>-->
+
+                                        <!--                                            <option selected="selected"-->
+                                        <!--                                                    value="2"-->
+                                        <!--                                            >USER-->
+                                        <!--                                            </option>-->
+                                        <!--                                        </select>-->
+                                        <!-------------------------------------------------------------------------------------------------------------->
                                         <label class="font-weight-bold"
-                                        >Роль: </label>
-                                        <select class="form-control form-control-sm"
-                                                name="roles"
-                                                multiple th:value="${newUser.getRoles}"
-                                                style="height: 50px; width: 300px; margin: 0 auto">
+                                        >Роль:</label>
+                                        <th:block th:each="role: ${allRoles}">
+                                            <input class="form-check-input"
+                                                   type="checkbox"
+                                                   th:field="*{roles}"
+                                                   th:text="${' '+role.name.substring(5)+' '}"
+                                                   th:value="${role.id}"/>
+                                        </th:block>
 
-                                            <option value="1">ADMIN</option>
 
-                                            <option selected="selected"
-                                                    value="2"
-                                            >USER
-                                            </option>
-                                        </select>
-
-                                        <!--                                    <h6 class="form-heading text-center" id="allRoles">-->
-                                        <!--                                        <th:block th:each="role: ${allRoles}">-->
-                                        <!--                                            <input class="form-check-input"-->
-                                        <!--                                                   type="checkbox"-->
-                                        <!--                                                   th:field="*{newUser.roles}"-->
-                                        <!--                                                   th:text="${' '+role.name.substring(5)+' '}"-->
-                                        <!--                                                   th:value="${role.id}"/>-->
-                                        <!--                                        </th:block>-->
-                                        <!--                                    </h6>-->
+                                        <!-------------------------------------------------------------------------------------------------------------->
                                         <br/>
-                                        <div>
+                                        <br/>
+                                        <div class="modal-footer justify-content-evenly">
                                             <button type="submit"
                                                     class="btn btn-success"
                                             >Добавить
@@ -683,7 +685,14 @@
                                 <td th:text="${thisUser.lastname}"></td>
                                 <td th:text="${thisUser.age}"></td>
                                 <td th:text="${thisUser.email}"></td>
-                                <td th:text="${thisUser.roles}"></td>
+                                <td>
+                                    <th:block th:each="role: ${thisUser.roles}">
+                                        <span type="checkbox"
+                                              th:text="${' '+role.name.substring(5)+' '}">
+
+                                        </span>
+                                    </th:block>
+                                </td>
                             </tr>
                             </tbody>
                         </table>
