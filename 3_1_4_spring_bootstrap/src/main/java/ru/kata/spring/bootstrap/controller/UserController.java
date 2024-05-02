@@ -38,6 +38,7 @@ public class UserController {
         userService.fillRoles();
         return "redirect:/";
     }
+
     @GetMapping("/truncate")
     public String truncate() {
         userService.truncate();

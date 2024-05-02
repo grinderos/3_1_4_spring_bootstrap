@@ -35,7 +35,7 @@ public class UserValidator implements Validator {
         }
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "", "Поле не может быть пустым");
-        if (user.getPassword()==null || user.getPassword().length() < 4 || user.getPassword().length() > 32) {
+        if (user.getPassword() == null || user.getPassword().length() < 4 || user.getPassword().length() > 32) {
             errors.rejectValue("password", "", "Пароль должен быть от 4 до 32 символов");
         }
 
@@ -49,7 +49,7 @@ public class UserValidator implements Validator {
 
         validate(o, errors);
 
-        if (user.getPasswordConfirm()==null || !user.getPasswordConfirm().equals(user.getPassword())) {
+        if (user.getPasswordConfirm() == null || !user.getPasswordConfirm().equals(user.getPassword())) {
             errors.rejectValue("passwordConfirm", "", "Пароли не совпадают");
         }
     }

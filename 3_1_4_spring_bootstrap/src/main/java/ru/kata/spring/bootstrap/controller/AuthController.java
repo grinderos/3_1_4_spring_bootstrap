@@ -59,7 +59,7 @@ public class AuthController {
 
     @GetMapping("/auth/register")
     public String registration(Model model, ModelMap messageModel) {
-        if(userService.getRoles().isEmpty() && roles.isEmpty()){
+        if (userService.getRoles().isEmpty() && roles.isEmpty()) {
             userService.fillRoles();
             roles = userService.getRoles();
         }

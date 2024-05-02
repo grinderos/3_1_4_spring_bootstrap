@@ -35,7 +35,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) {
 
         User user = userRepository.findByUsername(username);
-        if (user == null){ throw new UsernameNotFoundException(username);}
+        if (user == null) {
+            throw new UsernameNotFoundException(username);
+        }
 
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
         for (Role role : user.getRoles()) {
@@ -91,9 +93,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Transactional
     public boolean update(User user) {
         User loadedUserFromDB;
-        if ((loadedUserFromDB = findUserById(user.getId())) == null) {
+        if ((loadedUserFromDB = findByUsername(user.getUsername())) != null &&
+                !loadedUserFromDB.getId().equals(user.getId())) {
             return false;
         }
+        loadedUserFromDB = findUserById(user.getId());
         if (user.getPassword() == null ||
                 user.getPassword().equals(loadedUserFromDB.getPassword()) ||
                 user.getPassword().length() == 0) {

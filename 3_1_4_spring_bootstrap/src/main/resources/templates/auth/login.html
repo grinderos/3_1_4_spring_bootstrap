@@ -9,7 +9,7 @@
     <title>Log in with your account</title>
 
 
-<!--    <link href="/static/scrypts/CascadSS.css" rel="stylesheet">-->
+    <!--    <link href="/static/scrypts/CascadSS.css" rel="stylesheet">-->
 </head>
 <body>
 <br/><br/>
@@ -22,24 +22,20 @@
                     <h6 class="text-danger" th:text="${msg}"></h6>
                 </th:block>
                 <h2 class="form-heading text-center">Форма авторизации</h2><br/>
-<!--            <span th:text="${message}"></span>-->
-            <input name="username" type="text" class="form-control" placeholder="Имя пользователя"
-                   autofocus="true"/><br/>
+                <!--            <span th:text="${message}"></span>-->
+                <input name="username" type="text" class="form-control" placeholder="Имя пользователя"
+                       autofocus="true"/><br/>
 
-            <input name="password" type="password" class="form-control" placeholder="Пароль"/>
-            <span class="has-error" th:text="${error}"></span><br/>
+                <input name="password" type="password" class="form-control" placeholder="Пароль"/>
+                <span class="has-error" th:text="${error}"></span><br/>
 
-            <button class="btn btn-ml btn-success btn-block" type="submit">Вход</button><br/>
-            <a class="btn btn-ml btn-primary btn-block" th:href="@{/auth/register}" target="_self">Регистрация</a>
+                <button class="btn btn-ml btn-success btn-block" type="submit">Вход</button>
+                <br/>
+                <a class="btn btn-ml btn-primary btn-block" th:href="@{/auth/register}" target="_self">Регистрация</a>
 
             </div>
         </div>
     </form>
 </div>
-
-
-<!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"-->
-<!--        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"-->
-<!--        crossorigin="anonymous"></script>-->
 </body>
 </html>

@@ -40,8 +40,8 @@ public class AdminController {
             newUser.addRole(userService.findRoleByName("ROLE_USER"));
         }
         if (!userService.save(newUser)) {
-            System.out.println("\nПользователь с логином '"+
-                    newUser.getUsername()+"' уже существует\n");
+            System.out.println("\nПользователь с логином '" +
+                    newUser.getUsername() + "' уже существует\n");
         }
         return "redirect:/admin";
     }
@@ -53,19 +53,19 @@ public class AdminController {
                 user.getUsername().equals(auth.getName()) &&
                 auth.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
             user.addRole(userService.findRoleByName("ROLE_ADMIN"));
-        } else if (user.getRoles().isEmpty()){
+        } else if (user.getRoles().isEmpty()) {
             user.addRole(userService.findRoleByName("ROLE_USER"));
         }
         if (!userService.update(user)) {
             return "redirect:/admin";
         }
-        if(userService.findByUsername(auth.getName())==null) {
-                session.invalidate();
-                return "redirect:/login";
+        if (userService.findByUsername(auth.getName()) == null) {
+            session.invalidate();
+            return "redirect:/login";
         }
         return auth.getAuthorities()
-                .contains(new SimpleGrantedAuthority("ROLE_ADMIN"))?
-        "redirect:/admin" : "redirect:/user";
+                .contains(new SimpleGrantedAuthority("ROLE_ADMIN")) ?
+                "redirect:/admin" : "redirect:/user";
     }
 
 
