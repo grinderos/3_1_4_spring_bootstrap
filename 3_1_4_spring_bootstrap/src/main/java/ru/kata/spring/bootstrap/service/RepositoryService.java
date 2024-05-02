@@ -8,6 +8,7 @@ import ru.kata.spring.bootstrap.model.User;
 import ru.kata.spring.bootstrap.repositories.RoleRepository;
 import ru.kata.spring.bootstrap.repositories.UserRepository;
 
+import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -79,8 +80,10 @@ public class RepositoryService {
             user.setPassword(PasswordEncoder.bCryptPasswordEncoder()
                     .encode(user.getPassword()));
         }
+        try {
+            userRepository.save(user);
+        } catch (Exception e) {}
         System.out.println("\nЮЗЕР ОБНОВЛЕН");
-        userRepository.save(user);
         return true;
     }
 
