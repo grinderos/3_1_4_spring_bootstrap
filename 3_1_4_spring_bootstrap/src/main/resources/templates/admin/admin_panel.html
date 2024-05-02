@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="ru" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
@@ -30,18 +29,23 @@
                  .708-.708L12.5 7.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
                 <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
             </svg>
-            Вы вошли как: </a>
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <span class="navbar-brand mb-0 h1"
-                  th:text="${thisUser.username}"></span>
-            <span class="navbar-brand mb-0 h1"
-            > | Обладает ролью: </span>
-            <th:block th:each="role: ${thisUser.roles}">
+            Вы вошли как:
+            <!--        </a>-->
+<!--            <ul class="navbar-nav me-auto mb-2 mb-lg-0">-->
+                <!--            <li class="nav-item">-->
+                <span class="navbar-brand mb-0 h1"
+                      th:text="${thisUser.username}"></span>
+
+                <span class="navbar-brand mb-0 h1"
+                > | Обладает ролью: </span>
+                <th:block th:each="role: ${thisUser.roles}">
                <span class="navbar-brand mb-0 h1"
                      th:text="${' '+role.name.substring(5)+' '}"></span>
-            </th:block>
-            <br/><br/>
-        </ul>
+                </th:block>
+
+                <!--            </li>-->
+<!--            </ul>-->
+        </a>
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
             <li class="nav-item">
                 <form action="/logout"
@@ -79,12 +83,7 @@
                 id="side-bar"
                 role="tablist"
                 aria-orientation="vertical">
-<!--                <div class="container">-->
                 <div class="nav-item">
-                    <!--                    <li class="nav-item"-->
-                    <!--                        sec:authorize="hasRole('ROLE_ADMIN')"-->
-                    <!--                        role="presentation"-->
-                    <!--                    >-->
                     <button class="nav-link active col-12"
                             id="side-admin-tab"
                             data-bs-toggle="pill"
@@ -118,12 +117,8 @@
                             </li>
                         </div>
                     </button>
-                    <!--                    </li>-->
                 </div>
-<!--                <div class="container">-->
                 <div class="nav-item">
-                    <!--                    <li class="nav-item"-->
-                    <!--                        role="presentation">-->
                     <button class="nav-link col-12"
                             id="side-user-tab"
                             data-bs-toggle="pill"
@@ -153,7 +148,6 @@
                             </li><!-- col-3 -->
                         </div><!-- row -->
                     </button><!-- nav-link col-12 -->
-                    <!--                    </li>&lt;!&ndash; nav-item &ndash;&gt;-->
                 </div><!-- container -->
             </ul><!--nav nav-pills flex-column pt-3 gap-1-->
         </div><!-- col-3 -->
@@ -362,20 +356,6 @@
                                                                     />
                                                                 </div>
 
-                                                                <!--                                                                <div class="mb-3">-->
-                                                                <!--                                                                    <label class="container-fluid "-->
-                                                                <!--                                                                           for="rolesUpdate">Role</label>-->
-                                                                <!--                                                                    <select class="form-control form-control-sm"-->
-                                                                <!--                                                                            id="rolesUpdate"-->
-                                                                <!--                                                                            name="roles"-->
-                                                                <!--                                                                            style="height: 60px;"-->
-                                                                <!--                                                                            multiple th:value="${user.roles}">-->
-                                                                <!--                                                                        <option value="1">ADMIN</option>-->
-                                                                <!--                                                                        <option selected="selected" value="2">USER-->
-                                                                <!--                                                                        </option>-->
-                                                                <!--                                                                    </select>-->
-                                                                <!--                                                                </div>-->
-                                                                <!-------------------------------------------------------------------------------------------------------------->
                                                                 <label class="font-weight-bold"
                                                                 >Роль:</label>
                                                                 <th:block th:each="role: ${allRoles}">
@@ -386,8 +366,6 @@
                                                                            th:value="${role.id}"/>
                                                                 </th:block>
 
-
-                                                                <!-------------------------------------------------------------------------------------------------------------->
                                                             </div><!--  -->
                                                             <div class="modal-footer justify-content-evenly">
                                                                 <button type="button"
@@ -511,7 +489,9 @@
                                                                         <th:block th:each="role: ${user.roles}">
                                                                         <span type="checkbox"
                                                                               id="roles_del"
-                                                                              th:text="${' '+role.name.substring(5)+' '}"></span>
+                                                                              th:text="${' '+role.name.substring(5)+' '}">
+
+                                                                        </span>
                                                                         </th:block>
                                                                     </h6>
                                                                 </div>
@@ -616,29 +596,15 @@
                                                for="password_new"
                                         >Пароль</label><br>
                                         <input class="form-control"
-                                               type="text"
+                                               type="password"
                                                name="password"
                                                id="password_new"
                                                placeholder="Пароль"
                                                minlength="4"
-                                               maxlength="32"
+                                               maxlength="64"
+                                               required
                                         /><br>
 
-                                        <!--                                        <label class="font-weight-bold"-->
-                                        <!--                                        >Роль: </label>-->
-                                        <!--                                        <select class="form-control form-control-sm"-->
-                                        <!--                                                name="roles"-->
-                                        <!--                                                multiple th:value="${newUser.getRoles}"-->
-                                        <!--                                                style="height: 50px; width: 300px; margin: 0 auto">-->
-
-                                        <!--                                            <option value="1">ADMIN</option>-->
-
-                                        <!--                                            <option selected="selected"-->
-                                        <!--                                                    value="2"-->
-                                        <!--                                            >USER-->
-                                        <!--                                            </option>-->
-                                        <!--                                        </select>-->
-                                        <!-------------------------------------------------------------------------------------------------------------->
                                         <label class="font-weight-bold"
                                         >Роль:</label>
                                         <th:block th:each="role: ${allRoles}">
@@ -649,9 +615,7 @@
                                                    th:value="${role.id}"/>
                                         </th:block>
 
-                                        <!-------------------------------------------------------------------------------------------------------------->
-                                        <br/>
-                                        <br/>
+                                        <br/><br/>
                                         <div class="modal-footer justify-content-evenly">
                                             <button type="submit"
                                                     class="btn btn-success"

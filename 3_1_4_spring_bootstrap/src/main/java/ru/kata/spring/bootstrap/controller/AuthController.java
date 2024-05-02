@@ -81,14 +81,14 @@ public class AuthController {
             user.addRole(userService.findRoleByName("ROLE_USER"));
         }
         userValidator.validateOnReg(user, bindingResult);
-        if (bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors() || !userService.save(user)) {
             model.addAttribute("roles", roles);
             return "/auth/register";
         }
-        if (!userService.save(user)) {
-            model.addAttribute("roles", roles);
-            return "/auth/register";
-        }
+//        if (!userService.save(user)) {
+//            model.addAttribute("roles", roles);
+//            return "/auth/register";
+//        }
         securityService.autoLogin(user.getUsername(), user.getPasswordConfirm());
         if (!user.getRoles().contains(userService.findRoleByName("ROLE_ADMIN"))) {
             return "redirect:/user";

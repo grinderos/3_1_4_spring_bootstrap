@@ -70,8 +70,6 @@ public class RepositoryService {
         if ((loadedUserFromDB = findUserById(user.getId())) == null) {
             return false;
         }
-//        if (user.getPassword().length()==60 ||
-//                user.getPassword().length()==0 || user.getPassword()==null) {
         if (user.getPassword() == null ||
                 user.getPassword().equals(loadedUserFromDB.getPassword()) ||
                 user.getPassword().length() == 0) {

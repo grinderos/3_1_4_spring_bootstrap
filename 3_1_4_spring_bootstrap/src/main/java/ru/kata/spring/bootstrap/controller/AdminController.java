@@ -3,47 +3,30 @@ package ru.kata.spring.bootstrap.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.kata.spring.bootstrap.model.User;
-import ru.kata.spring.bootstrap.service.SecurityServiceImpl;
 import ru.kata.spring.bootstrap.service.UserDetailsServiceImpl;
 
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
 
 @Controller
 public class AdminController {
 
     private UserDetailsServiceImpl userService;
-    private SecurityServiceImpl securityService;
 
     @Autowired
-    public AdminController(UserDetailsServiceImpl userService,
-                           SecurityServiceImpl securityService
-
-    ) {
+    public AdminController(UserDetailsServiceImpl userService) {
         this.userService = userService;
-        this.securityService = securityService;
     }
 
     @GetMapping("/admin")
     public String adminPage(Model model, Authentication auth, HttpSession session) {
         User thisUser = userService.findByUsername(auth.getName());
-//        if((thisUser = userService.findByUsername(auth.getName())) == null){
-//            System.out.println("\nВ БАЗЕ НЕ НАЙДЕН ЮЗЕР ИЗ АТЕНТИФИКАЦИИ");
-//            session.invalidate();
-//            return "redirect:/login";
-//        }
-//        if (!thisUser.getRoles().contains(userService.findRoleByName("ROLE_ADMIN"))) {
-//            return "redirect:/user";
-//        }
         model.addAttribute("thisUser", thisUser);
         model.addAttribute("newUser", new User());
         model.addAttribute("allRoles", userService.getRoles());

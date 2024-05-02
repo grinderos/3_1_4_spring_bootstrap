@@ -40,7 +40,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 (user.getUsername(), user.getPassword(), grantedAuthorities);
     }
 
-    //<<<<< delegate block >>>>>
+    //<<<<< delegate repository block >>>>>
     public User findUserById(Long id) {return repositoryService.findUserById(id);}
     public User findByUsername(String username) {
         return repositoryService.findByUsername(username);
