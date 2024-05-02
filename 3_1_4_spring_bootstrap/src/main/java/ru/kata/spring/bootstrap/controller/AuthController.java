@@ -1,7 +1,6 @@
 package ru.kata.spring.bootstrap.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -85,10 +84,6 @@ public class AuthController {
             model.addAttribute("roles", roles);
             return "/auth/register";
         }
-//        if (!userService.save(user)) {
-//            model.addAttribute("roles", roles);
-//            return "/auth/register";
-//        }
         securityService.autoLogin(user.getUsername(), user.getPasswordConfirm());
         if (!user.getRoles().contains(userService.findRoleByName("ROLE_ADMIN"))) {
             return "redirect:/user";

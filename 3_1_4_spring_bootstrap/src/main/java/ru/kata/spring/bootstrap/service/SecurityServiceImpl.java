@@ -11,9 +11,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
-import ru.kata.spring.bootstrap.model.Role;
-
-import java.util.List;
 
 @Service
 public class SecurityServiceImpl implements SecurityService {
@@ -36,8 +33,6 @@ public class SecurityServiceImpl implements SecurityService {
                 AnonymousAuthenticationToken.class.isAssignableFrom(authentication.getClass())) {
             return false;
         }
-        System.out.println("--------\nпроверка аутентификации " + authentication.getName() + "\n-------\n" + authentication.isAuthenticated() + "\n-------");
-        System.out.println();
         return authentication.isAuthenticated();
     }
 
@@ -47,21 +42,12 @@ public class SecurityServiceImpl implements SecurityService {
         setAuthentication(userDetails, username, password);
     }
 
-    public void setAuthenticationAfterChangeUsername(UserDetails userDetails) {
-        setAuthentication(userDetails, userDetails.getUsername(), userDetails.getPassword());
-    }
-
-
     public void setAuthentication(UserDetails userDetails, String username, String password) {
-        System.out.println("начало setAuthentication\n");
         UsernamePasswordAuthenticationToken token =
                 new UsernamePasswordAuthenticationToken(userDetails, password, userDetails.getAuthorities());
-        System.out.println("перед authenticationManager.authenticate(token);\n");
         authenticationManager.authenticate(token);
-        System.out.println("\nзавершена передача токена в менеджер\n");
         if (token.isAuthenticated()) {
             SecurityContextHolder.getContext().setAuthentication(token);
-            System.out.println(">>>>>>>>>>>>>>>\nТокен загружен в КонтекстХолдер\n<<<<<<<<<<<<<<<");
             logger.debug(String.format("Успешный автоматический вход '%s'!", username));
         }
     }

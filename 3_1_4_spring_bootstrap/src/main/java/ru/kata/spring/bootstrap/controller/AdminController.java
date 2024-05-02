@@ -25,7 +25,7 @@ public class AdminController {
     }
 
     @GetMapping("/admin")
-    public String adminPage(Model model, Authentication auth, HttpSession session) {
+    public String adminPage(Model model, Authentication auth) {
         User thisUser = userService.findByUsername(auth.getName());
         model.addAttribute("thisUser", thisUser);
         model.addAttribute("newUser", new User());

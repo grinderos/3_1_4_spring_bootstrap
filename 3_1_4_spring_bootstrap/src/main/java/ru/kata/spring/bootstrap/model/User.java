@@ -13,7 +13,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-//@Data
 @Table(name = "users")
 public class User implements UserDetails {
     @Id
@@ -171,13 +170,13 @@ public class User implements UserDetails {
     @Override
     public String toString() {
         return "User:" +
-                "\nid      = " + id +
-                "\nusername= " + username +
+                "\nid       = " + id +
+                "\nusername = " + username +
                 "\nfirstname= " + firstname +
-                "\nlastname= " + lastname +
-                "\nemail= " + email +
-                "\nage     = " + age +
-                "\npassword= " + password +
-                "\nroles   = " + roles;
+                "\nlastname = " + lastname +
+                "\nemail    = " + email +
+                "\nage      = " + age +
+                "\npassword = " + password +
+                "\nroles    = " + roles;
     }
 }

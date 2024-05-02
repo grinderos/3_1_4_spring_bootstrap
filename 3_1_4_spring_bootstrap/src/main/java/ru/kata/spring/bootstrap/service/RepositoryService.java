@@ -8,7 +8,6 @@ import ru.kata.spring.bootstrap.model.User;
 import ru.kata.spring.bootstrap.repositories.RoleRepository;
 import ru.kata.spring.bootstrap.repositories.UserRepository;
 
-import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -59,13 +58,17 @@ public class RepositoryService {
             return false;
         }
         user.setPassword(PasswordEncoder.bCryptPasswordEncoder().encode(user.getPassword()));
-        userRepository.save(user);
+        try {
+            userRepository.save(user);
+        } catch (Exception e) {
+            System.out.println("\nСохранение не удалось. Возможно имя пользователя уже существует в базе\n");
+            return false;
+        }
         return true;
     }
 
     @Transactional
     public boolean update(User user) {
-        System.out.println("\nПОПЫТКА ОБНОВИТЬ ЮЗЕРА:\n"+user);
         User loadedUserFromDB;
         if ((loadedUserFromDB = findUserById(user.getId())) == null) {
             return false;
@@ -80,8 +83,10 @@ public class RepositoryService {
         }
         try {
             userRepository.save(user);
-        } catch (Exception e) {}
-        System.out.println("\nЮЗЕР ОБНОВЛЕН");
+        } catch (Exception e) {
+            System.out.println("\nСохранение не удалось. Возможно имя пользователя уже существует в базе\n");
+            return false;
+        }
         return true;
     }
 
