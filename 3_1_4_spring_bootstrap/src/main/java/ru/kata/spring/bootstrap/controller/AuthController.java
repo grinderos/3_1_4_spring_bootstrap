@@ -61,8 +61,9 @@ public class AuthController {
 
     @GetMapping("/auth/register")
     public String registration(Model model, ModelMap messageModel) {
-        if(userService.getRoles().isEmpty()){
+        if(userService.getRoles().isEmpty() && roles.isEmpty()){
             userService.fillRoles();
+            roles = userService.getRoles();
         }
         if (userService.getUsers().isEmpty()) {
             ArrayList<String> messages = new ArrayList<>();
