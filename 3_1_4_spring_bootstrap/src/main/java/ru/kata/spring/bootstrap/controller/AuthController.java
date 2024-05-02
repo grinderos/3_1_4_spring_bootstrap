@@ -40,7 +40,6 @@ public class AuthController {
         return "start";
     }
 
-
     @GetMapping("/login")
     public String login(Model model, String error, String logout) {
         System.out.println("сработал /login");
@@ -57,7 +56,6 @@ public class AuthController {
             model.addAttribute("message", "Успешный выход из системы");
         return "auth/login";
     }
-
 
     @GetMapping("/auth/register")
     public String registration(Model model, ModelMap messageModel) {

@@ -10,11 +10,11 @@ import ru.kata.spring.bootstrap.model.User;
 @Component
 public class UserValidator implements Validator {
 
-    private RepositoryService repositoryService;
+    private UserDetailsServiceImpl userDetailsService;
 
     @Autowired
-    public UserValidator(RepositoryService repositoryService) {
-        this.repositoryService = repositoryService;
+    public UserValidator(UserDetailsServiceImpl userDetailsService) {
+        this.userDetailsService = userDetailsService;
     }
 
     @Override
@@ -30,7 +30,7 @@ public class UserValidator implements Validator {
         if (user.getUsername().length() < 3 || user.getUsername().length() > 32) {
             errors.rejectValue("username", "", "Имя пользователя должно быть длиной от 3 до 32 символов");
         }
-        if (repositoryService.findByUsername(user.getUsername()) != null) {
+        if (userDetailsService.findByUsername(user.getUsername()) != null) {
             errors.rejectValue("username", "", "Пользователь с таким именем уже существует");
         }
 

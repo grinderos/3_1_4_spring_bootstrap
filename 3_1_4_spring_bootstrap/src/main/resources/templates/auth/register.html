@@ -18,7 +18,7 @@
           th:action="@{/auth/register_new_user}">
         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
 
-        <div class="d-grid gap-2 col-3 mx-auto">
+        <div class="d-grid gap-2 col-4 mx-auto">
             <th:block th:each="msg : ${messages}">
                 <h6 class="text-danger" th:text="${msg}"></h6>
             </th:block>
