@@ -1,6 +1,8 @@
 package ru.kata.spring.bootstrap.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -41,14 +43,16 @@ public class AuthController {
     }
 
     @GetMapping("/login")
-    public String login(Model model, String error, String logout) {
+    public String login(Model model, String error, String logout, Authentication auth) {
         System.out.println("сработал /login");
         if (userService.getUsers().isEmpty()) {
             return "redirect:auth/register";
         }
         if (securityService.isAuthenticated()) {
             System.out.println("this user authenticated");
+            if(auth.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN")))
             return "redirect:/admin/";
+            else return "redirect:/user";
         }
         if (error != null)
             model.addAttribute("error", "Имя пользователя или пароль не совпадают");
